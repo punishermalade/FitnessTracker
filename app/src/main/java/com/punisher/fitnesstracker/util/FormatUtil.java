@@ -5,6 +5,7 @@ import android.widget.NumberPicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Represents a class that contains different function to format time, date and distance.

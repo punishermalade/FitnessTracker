@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import com.punisher.fitnesstracker.database.DatabaseManager;
 
@@ -40,6 +41,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private static final int DIALOG_ADD_ACT_DURATION = 700;
     private static final int DIALOG_ADD_ACT_DISTANCE = 800;
 
+    private Calendar _currentCalendar = null;
     private SimpleDateFormat _dateFormat = null;
     private SimpleDateFormat _timeFormat = null;
     private Button _btnSetDate = null;
@@ -63,8 +65,11 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
         // set the dateFormat objects and the current time
         _dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-        _timeFormat = new SimpleDateFormat("hh:mm");
+        _timeFormat = new SimpleDateFormat("HH:mm");
         _currentDate = new Date(System.currentTimeMillis());
+        _currentCalendar = new GregorianCalendar();
+        _currentCalendar.setTimeZone(TimeZone.getDefault());
+        Log.i("fitness", "Timezone default: " + _currentCalendar.getTimeZone().getDisplayName());
 
         // set the date button and text with the date
         _btnSetDate = (Button)findViewById(R.id.txt_add_date);
@@ -156,6 +161,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(_currentDate);
+            calendar.setTimeZone(TimeZone.getDefault());
 
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
@@ -167,8 +173,9 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         if (id == DIALOG_ADD_TIME) {
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(_currentDate);
+            calendar.setTimeZone(TimeZone.getDefault());
 
-            return new TimePickerDialog(this, myTimeListener, Calendar.HOUR, Calendar.MINUTE, true);
+            return new TimePickerDialog(this, myTimeListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
 
         }
 
@@ -204,12 +211,11 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         @Override
         public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
 
-            Calendar calendar = new GregorianCalendar();
-            calendar.set(arg1, arg2, arg3);
-            _btnSetDate.setText(_dateFormat.format(new Date(calendar.getTimeInMillis())));
+            _currentCalendar.set(arg1, arg2, arg3);
+            _btnSetDate.setText(_dateFormat.format(new Date(_currentCalendar.getTimeInMillis())));
 
             // adding to the FitnessActivity
-            _currentFitness.setDayOfActivity(new Date(calendar.getTimeInMillis()));
+            _currentFitness.setDayOfActivity(new Date(_currentCalendar.getTimeInMillis()));
         }
     };
 
@@ -218,13 +224,12 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         @Override
         public void onTimeSet(TimePicker arg0, int arg1, int arg2) {
 
-            Calendar calendar = new GregorianCalendar();
-            calendar.set(Calendar.HOUR, arg1);
-            calendar.set(Calendar.MINUTE, arg2);
-            _btnSetTime.setText(_timeFormat.format(new Date(calendar.getTimeInMillis())));
+            _currentCalendar.set(Calendar.HOUR_OF_DAY, arg1);
+            _currentCalendar.set(Calendar.MINUTE, arg2);
+            _btnSetTime.setText(_timeFormat.format(new Date(_currentCalendar.getTimeInMillis())));
 
             // adding to the FitnessActivity
-            _currentFitness.setTimeOfActivity(new Date(calendar.getTimeInMillis()));
+            _currentFitness.setDayOfActivity(new Date(_currentCalendar.getTimeInMillis()));
 
         }
 
