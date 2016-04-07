@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".fragment.CommandFragment">
+
+    <Button
+        android:id="@+id/btn_add_activity"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="@string/btn_add_activity"/>
+
+<!--
+    <Button
+        android:id="@+id/btn_list_activity"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="@string/btn_list_activity"/>
+
+    <Button
+        android:id="@+id/btn_stats_activity"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="@string/btn_stats_activity"/>
+
+
+
+    <Button
+        android:id="@+id/btn_graph_activity"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="@string/btn_graph_activity"/>
+-->
+</LinearLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="errors_validation_failed">Validation failed</string>
+    <string name="errors_could_not_save_activity">Was not able to save this activity</string>
+
+    <string name="errors_day_in_future">Day of activity in future</string>
+    <string name="errors_duration_is_zero">Duration must be greater than 0 second</string>
+    <string name="errors_distance_is_zero">Distance must be greater than 0 meter</string>
+    <string name="errors_fitness_type_not_valid">Fitness type is not valid</string>
+
+</resources>

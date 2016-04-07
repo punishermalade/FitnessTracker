@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Fitness Tracker</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_add_activity">New</string>
+    <string name="btn_list_activity">List</string>
+    <string name="btn_stats_activity">Stats</string>
+    <string name="btn_graph_activity">Graph</string>
+
+    <string name="btn_seeall_activity">See All Activities</string>
+    <string name="btn_addfinish_activity">Add This Activity</string>
+    <string name="lbl_add_date">Date (click on button to set)</string>
+    <string name="lbl_add_time">Current Time (click to set)</string>
+    <string name="lbl_add_act_type">Activity Type</string>
+
+
+    <string name="act_type_dialog_title">Activity Type</string>
+    <string name="lbl_add_act_duration">Duration</string>
+    <string name="lbl_add_act_distance">Distance</string>
+
+    <string name="btn_OK">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_choose">Press to Choose</string>
+    <string name="btn_set">Press to Set</string>
+
+    <string name="unit_hour">Hours</string>
+    <string name="unit_min">Minutes</string>
+    <string name="unit_sec">Seconds</string>
+    <string name="unit_km">Kilometers</string>
+    <string name="unit_m">Meters</string>
+
+    <string name="lbl_title_dialog_duration">Activity Duration</string>
+    <string name="lbl_title_dialog_distance">Activity Distance</string>
+
+    <string name="btn_stop_activity">Stop this program!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_signin_google">Google Sign-In</string>
+    <string name="action_export_db">Export Database</string>
+    <string name="action_import_db">Import Database</string>
+    <string name="action_clear_db">Clear Database</string>
+
+</resources>
