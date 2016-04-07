@@ -40,4 +40,6 @@
     <string name="action_import_db">Import Database</string>
     <string name="action_clear_db">Clear Database</string>
 
+    <string name="dialog_clear_db_confirmation">All data will be lost. Continue?</string>
+    <string name="dialog_import_db_confirmation">Current data will be replaced by a backup database. Continue?</string>
 </resources>

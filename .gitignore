@@ -40,3 +40,4 @@ captures/
 
 # other
 .idea/
+.DS_Store

@@ -1,5 +1,7 @@
 package com.punisher.fitnesstracker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -89,9 +91,6 @@ public class MainActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == R.id.action_signin_google) {
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -103,19 +102,42 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if (id == R.id.action_import_db) {
-            DatabaseManager dbManager = new DatabaseManager(this);
-            dbManager.importDatabaseFromStorage();
 
-            // restart the view
-            this.recreate();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.action_import_db));
+            builder.setMessage(getString(R.string.dialog_import_db_confirmation));
+            builder.setPositiveButton(getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DatabaseManager dbManager = new DatabaseManager(getBaseContext());
+                    dbManager.importDatabaseFromStorage();
+
+                    // restart the view
+                    recreate();
+                }
+            });
+            builder.setNegativeButton(getString(android.R.string.no), null);
+            builder.show();
         }
 
         if (id == R.id.action_clear_db) {
-            DatabaseManager dbManager = new DatabaseManager(this);
-            dbManager.clearDatabase();
 
-            // restart the view
-            this.recreate();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.action_clear_db));
+            builder.setCancelable(true);
+            builder.setMessage(getString(R.string.dialog_clear_db_confirmation));
+            builder.setPositiveButton(getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DatabaseManager dbManager = new DatabaseManager(getBaseContext());
+                    dbManager.clearDatabase();
+
+                    // restart the view
+                    recreate();
+                }
+            });
+            builder.setNegativeButton(getString(android.R.string.no), null);
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);

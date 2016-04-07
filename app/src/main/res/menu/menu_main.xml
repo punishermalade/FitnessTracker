@@ -2,11 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.punisher.fitnesstracker.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="050"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_clear_db"
