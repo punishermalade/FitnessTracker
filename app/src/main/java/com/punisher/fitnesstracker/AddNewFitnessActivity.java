@@ -247,7 +247,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
     @Override
     public void onActivityDurationSet(int h1, int m1, int m2, int s1, int s2) {
-        _btnSetDuration.setText(String.valueOf(TimeUtil.getSecondsFromPicker(h1, m1, m2, s1, s2)) + " " + getString(R.string.unit_sec));
+        _btnSetDuration.setText(String.valueOf(TimeUtil.getSecondsFromPicker(h1, m1, m2, s1, s2)) + " SECONDS");
 
         // adding to the FitnessActivity
         _currentFitness.setDuration(TimeUtil.getSecondsFromPicker(h1, m1, m2, s1, s2));
@@ -255,7 +255,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
     @Override
     public void onActivityDistanceSet(int k1, int k2, int m1, int m2, int m3) {
-        _btnSetDistance.setText(String.valueOf(DistanceUtil.getMeters(k1, k2, m1, m2, m3)) + " " + getString(R.string.unit_m));
+        _btnSetDistance.setText(String.valueOf(DistanceUtil.getMeters(k1, k2, m1, m2, m3)) + " METERS");
 
         // adding to the FitnessActivity
         _currentFitness.setDistance(DistanceUtil.getMeters(k1, k2, m1, m2, m3));

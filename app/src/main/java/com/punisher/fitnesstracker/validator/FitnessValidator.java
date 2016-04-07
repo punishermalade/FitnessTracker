@@ -28,13 +28,11 @@ public class FitnessValidator {
         _validations.clear();
         _fitness = a;
 
-        validateDay();
-        validateTime();
+        //validateDay();
+        //validateTime();
         validateFitnessType();
         validateDuration();
-        validateDuration();
-
-        _validations.clear();
+        validateDistance();
 
         return _validations;
     }
@@ -64,12 +62,11 @@ public class FitnessValidator {
     }
 
     private void validateFitnessType() {
-        for (FitnessActivity.FitnessType ft : FitnessActivity.FitnessType.values()) {
-            if (ft == _fitness.getFitnessType()) {
-                return;
-            }
+
+        if (_fitness.getFitnessType() == null) {
+            _validations.put("FitnessType", R.string.errors_fitness_type_not_valid);
         }
-        _validations.put("FitnessType", R.string.errors_fitness_type_not_valid);
+
     }
 
     private void validateDistance() {

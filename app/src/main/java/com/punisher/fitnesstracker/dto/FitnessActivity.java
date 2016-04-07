@@ -18,7 +18,7 @@ public class FitnessActivity {
     public FitnessActivity() {
         _dayOfActivity = new Date(System.currentTimeMillis());
         _timeOfActivity = new Date(System.currentTimeMillis());
-        _fitnessType = FitnessType.RUNNING;
+        _fitnessType = null;
     }
 
     public Date getDayOfActivity() {
