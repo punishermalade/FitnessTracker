@@ -99,13 +99,14 @@ public class DatabaseManager {
         Log.i("fitness", "Ext storage readable: " + isExternalStorageReadable() + " writable: " + isExternalStorageWritable());
 
         if (!checkPermissions()) {
+            Toast.makeText(_context, "No access to external storage for read or write operation", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), FitnessDBHelper.DATABASE_NAME);
+        File file = new File(Environment.getExternalStorageDirectory().getPath() +
+                             System.getProperty("file.separator") + FitnessDBHelper.DATABASE_NAME);
 
-        Log.i("fitness", "Existing DB path: " + file.getAbsolutePath());
+        Log.i("Fitness", "Existing DB path: " + file.getAbsolutePath());
 
         if (!file.mkdir()) {
             Log.i("fitness", "DB Path mkdir command returned false. Either WRITE permission is not enabled or directory already exists");
@@ -132,8 +133,11 @@ public class DatabaseManager {
             stream.close();
             inStream.close();
 
+            Toast.makeText(_context, "Database copied to external storage", Toast.LENGTH_LONG).show();
+
         }
         catch (Exception ex) {
+            Toast.makeText(_context, "Database copy failed: " + ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             Log.w("fitness", "copying the database to external storage failed", ex);
             return false;
         }
@@ -144,11 +148,12 @@ public class DatabaseManager {
     public boolean importDatabaseFromStorage() {
 
         if (!checkPermissions()) {
+            Toast.makeText(_context, "No access to external storage for read or write operation", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        File savedDBDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), FitnessDBHelper.DATABASE_NAME);
+        File savedDBDir = new File(Environment.getExternalStorageDirectory().getPath() +
+                System.getProperty("file.separator") + FitnessDBHelper.DATABASE_NAME);
 
         // finding the latest backup
         File savedDB = getLatestBackup(savedDBDir);
@@ -227,7 +232,6 @@ public class DatabaseManager {
     private boolean checkPermissions() {
         if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
             Log.w("fitness", "WRITE or READ permission not set");
-            Toast.makeText(_context, "Permissions to read and write external storage not enabled", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
