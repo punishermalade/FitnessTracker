@@ -44,9 +44,23 @@ public class DatabaseManager {
                 FitnessDBContract.FitnessEntry.COLUMN_NAME_NULLABLE,
                 values);
 
+        db.close();
+
         Log.i("Fitness", "new activity added: " + a);
 
 
+    }
+
+    public void deleteActivity(FitnessActivity a) {
+
+        SQLiteDatabase db = _dbHelper.getWritableDatabase();
+        db.delete(FitnessDBContract.FitnessEntry.TABLE_NAME,
+                    FitnessDBContract.FitnessEntry._ID + "=" + a.getID(),
+                    null);
+
+        db.close();
+
+        Log.i("fitness", "activity deleted: " + a.toString());
     }
 
     public List<FitnessActivity> getFitnessActivityList() {
@@ -54,6 +68,7 @@ public class DatabaseManager {
         SQLiteDatabase db = _dbHelper.getReadableDatabase();
 
         String[] projection = new String[] {
+                FitnessDBContract.FitnessEntry._ID,
                 FitnessDBContract.FitnessEntry.COLUMN_NAME_DAY,
                 FitnessDBContract.FitnessEntry.COLUMN_NAME_TIME,
                 FitnessDBContract.FitnessEntry.COLUMN_NAME_FITNESS_TYPE,
@@ -77,6 +92,7 @@ public class DatabaseManager {
         for (int i = 0; i < c.getCount(); i++) {
 
             FitnessActivity act = new FitnessActivity();
+            act.setID(c.getString(c.getColumnIndex(FitnessDBContract.FitnessEntry._ID)));
             act.setDayOfActivity(new Date(c.getLong(c.getColumnIndex(FitnessDBContract.FitnessEntry.COLUMN_NAME_DAY))));
             act.setTimeOfActivity(new Date(c.getLong(c.getColumnIndex(FitnessDBContract.FitnessEntry.COLUMN_NAME_TIME))));
             act.setFitnessType(FitnessActivity.FitnessType.valueOf(
@@ -89,6 +105,9 @@ public class DatabaseManager {
 
             Log.i("Fitness", "new activity found: " + act);
         }
+
+        c.close();
+        db.close();
 
         return list;
 

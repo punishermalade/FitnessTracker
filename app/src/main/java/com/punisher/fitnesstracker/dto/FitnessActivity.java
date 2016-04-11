@@ -14,12 +14,17 @@ public class FitnessActivity {
     private int _distance = 0;
     private int _duration = 0;
     private FitnessType _fitnessType;
+    private String _id = "";
 
     public FitnessActivity() {
         _dayOfActivity = new Date(System.currentTimeMillis());
         _timeOfActivity = new Date(System.currentTimeMillis());
         _fitnessType = null;
     }
+
+    public String getID() { return _id; }
+
+    public void setID(String id) { _id = id; }
 
     public Date getDayOfActivity() {
         return _dayOfActivity;
@@ -63,7 +68,8 @@ public class FitnessActivity {
 
     @Override
     public String toString() {
-        return getDayOfActivity().toGMTString() + " " +
+        return  getID() + " " +
+                getDayOfActivity().toGMTString() + " " +
                 getTimeOfActivity().toGMTString() + " " +
                 getFitnessType().toString() + " " +
                 String.valueOf(getDuration()) + " " +
