@@ -35,16 +35,22 @@ public abstract class DatabaseTask extends AsyncTask<Void, Void, Void> {
      */
     public DatabaseTask(Context c, String msg) {
         // build the dialog
-        progressDialog = new ProgressDialog(c);
-        progressDialog.setMessage(msg);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
+        if (msg != null) {
+            progressDialog = new ProgressDialog(c);
+            progressDialog.setMessage(msg);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+        }
 
         // keep the context
         mainContext = c;
 
         // get an instance of the databasemanager
         dbManager = new DatabaseManager(c);
+    }
+
+    public DatabaseTask(Context c) {
+        this(c, null);
     }
 
     /**
@@ -88,7 +94,7 @@ public abstract class DatabaseTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void v) {
         refreshUI();
 
-        if (progressDialog.isShowing()) {
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }

@@ -50,4 +50,6 @@
     <string name="progress_bar_loading_msg">Wait while loading the database</string>
     <string name="progress_bar_clearing_msg">Wait while deleting the database</string>
     <string name="progress_bar_exporting_msg">Wait while exporting the database</string>
+    <string name="progress_bar_deleting_msg">Wait while deleting the activity</string>
+    <string name="progress_bar_adding_msg">Wait while adding the activity</string>
 </resources>

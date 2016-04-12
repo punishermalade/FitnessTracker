@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.punisher.fitnesstracker.R;
 import com.punisher.fitnesstracker.adapter.FitnessActivityAdapterList;
 import com.punisher.fitnesstracker.database.DatabaseManager;
 import com.punisher.fitnesstracker.dto.FitnessActivity;
+import com.punisher.fitnesstracker.task.DatabaseTask;
 
 import java.util.List;
 
@@ -49,13 +51,21 @@ public class ActivityList extends Fragment  {
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        FitnessActivity activity = (FitnessActivity)parent.getItemAtPosition(position);
-                        DatabaseManager dbManager = new DatabaseManager(getActivity());
-                        dbManager.deleteActivity(activity);
 
-                        // reload the fragment
-                        getActivity().recreate();
+                        AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity(),
+                                                    getString(R.string.progress_bar_deleting_msg)) {
+                            @Override
+                            protected void doTask() {
+                                FitnessActivity activity = (FitnessActivity)parent.getItemAtPosition(position);
+                                dbManager.deleteActivity(activity);
+                            }
 
+                            @Override
+                            protected void refreshUI() {
+                                Fragment frag = getFragmentManager().findFragmentById(R.id.fragment_personal_list);
+                                frag.onResume();
+                            }
+                        }.execute();
                     }
                 });
 
@@ -64,9 +74,6 @@ public class ActivityList extends Fragment  {
                 return false;
             }
         });
-
-        // load the data
-        loadList(view);
 
         return view;
     }
@@ -79,12 +86,24 @@ public class ActivityList extends Fragment  {
     }
 
     private void loadList(View view) {
-        DatabaseManager manager = new DatabaseManager(getActivity());
-        List<FitnessActivity> list = manager.getFitnessActivityList();
-        FitnessActivity[] arrList = list.toArray(new FitnessActivity[0]);
 
-        _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row, arrList);
-        _listView.setAdapter(_adapter);
+        AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity(),
+                                                getString(R.string.progress_bar_loading_msg)) {
+
+            private List<FitnessActivity> list = null;
+            private FitnessActivity[] arrList = null;
+
+            @Override
+            protected void doTask() {
+                list = dbManager.getFitnessActivityList();
+                arrList = list.toArray(new FitnessActivity[0]);
+            }
+
+            @Override
+            protected void refreshUI() {
+                _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row, arrList);
+                _listView.setAdapter(_adapter);
+            }
+        }.execute();
     }
-
 }

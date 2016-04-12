@@ -2,6 +2,7 @@ package com.punisher.fitnesstracker;
 
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.punisher.fitnesstracker.dialog.ActivityDistance;
 import com.punisher.fitnesstracker.dialog.ActivityDurationFragment;
 import com.punisher.fitnesstracker.dialog.ActivityTypeDialog;
 import com.punisher.fitnesstracker.dto.FitnessActivity;
+import com.punisher.fitnesstracker.task.DatabaseTask;
 import com.punisher.fitnesstracker.util.DistanceUtil;
 import com.punisher.fitnesstracker.util.FormatUtil;
 import com.punisher.fitnesstracker.util.TimeUtil;
@@ -152,8 +154,19 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     }
 
     private void persistFitness() {
-        DatabaseManager manager = new DatabaseManager(this);
-        manager.insertNewFitnessActivity(_currentFitness);
+        AsyncTask<Void, Void, Void> task = new DatabaseTask(this,
+                                            getString(R.string.progress_bar_adding_msg)) {
+
+            @Override
+            protected void doTask() {
+                dbManager.insertNewFitnessActivity(_currentFitness);
+            }
+
+            @Override
+            protected void refreshUI() {
+                // nothing, end of activity
+            }
+        }.execute();
     }
 
     @Override
