@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.app.Dialog;
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.punisher.fitnesstracker.dialog.ActivityDurationFragment;
 import com.punisher.fitnesstracker.dialog.ActivityTypeDialog;
 import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.util.DistanceUtil;
+import com.punisher.fitnesstracker.util.FormatUtil;
 import com.punisher.fitnesstracker.util.TimeUtil;
 import com.punisher.fitnesstracker.validator.FitnessValidator;
 
@@ -44,12 +46,12 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private Calendar _currentCalendar = null;
     private SimpleDateFormat _dateFormat = null;
     private SimpleDateFormat _timeFormat = null;
-    private Button _btnSetDate = null;
+    private EditText _btnSetDate = null;
     private Date _currentDate = null;
-    private Button _btnSetTime = null;
-    private Button _btnSetActivityType = null;
-    private Button _btnSetDuration = null;
-    private Button _btnSetDistance = null;
+    private EditText _btnSetTime = null;
+    private EditText _btnSetActivityType = null;
+    private EditText _btnSetDuration = null;
+    private EditText _btnSetDistance = null;
     private Button _btnCancel = null;
     private Button _btnOk = null;
 
@@ -72,7 +74,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         Log.i("fitness", "Timezone default: " + _currentCalendar.getTimeZone().getDisplayName());
 
         // set the date button and text with the date
-        _btnSetDate = (Button)findViewById(R.id.txt_add_date);
+        _btnSetDate = (EditText)findViewById(R.id.txt_add_date);
         _btnSetDate.setText(_dateFormat.format(_currentDate));
         _btnSetDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +84,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         });
 
         // set the time button and text with the current time
-        _btnSetTime = (Button)findViewById(R.id.txt_add_time);
+        _btnSetTime = (EditText)findViewById(R.id.txt_add_time);
         _btnSetTime.setText(_timeFormat.format(_currentDate));
         _btnSetTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +93,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             }
         });
 
-        _btnSetActivityType = (Button)findViewById(R.id.btn_add_act_type);
+        _btnSetActivityType = (EditText)findViewById(R.id.btn_add_act_type);
         _btnSetActivityType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +101,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             }
         });
 
-        _btnSetDuration = (Button)findViewById(R.id.btn_add_act_duration);
+        _btnSetDuration = (EditText)findViewById(R.id.btn_add_act_duration);
         _btnSetDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +109,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             }
         });
 
-        _btnSetDistance = (Button)findViewById(R.id.btn_add_act_distance);
+        _btnSetDistance = (EditText)findViewById(R.id.btn_add_act_distance);
         _btnSetDistance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,15 +254,19 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
     @Override
     public void onActivityDurationSet(int h1, int m1, int m2, int s1, int s2) {
-        _btnSetDuration.setText(String.valueOf(TimeUtil.getSecondsFromPicker(h1, m1, m2, s1, s2)) + " SECONDS");
+
+        int seconds = TimeUtil.getSecondsFromPicker(h1, m1, m2, s1, s2);
+        _btnSetDuration.setText(FormatUtil.formatDuration(seconds));
 
         // adding to the FitnessActivity
-        _currentFitness.setDuration(TimeUtil.getSecondsFromPicker(h1, m1, m2, s1, s2));
+        _currentFitness.setDuration(seconds);
     }
 
     @Override
     public void onActivityDistanceSet(int k1, int k2, int m1, int m2, int m3) {
-        _btnSetDistance.setText(String.valueOf(DistanceUtil.getMeters(k1, k2, m1, m2, m3)) + " METERS");
+
+        int distance = DistanceUtil.getMeters(k1, k2, m1, m2, m3);
+        _btnSetDistance.setText(FormatUtil.getDistance(distance));
 
         // adding to the FitnessActivity
         _currentFitness.setDistance(DistanceUtil.getMeters(k1, k2, m1, m2, m3));

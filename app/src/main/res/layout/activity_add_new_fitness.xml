@@ -23,11 +23,12 @@
             android:id="@+id/lbl_add_date"
             android:text="@string/lbl_add_date"/>
 
-        <Button
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lbl_add_date"
             android:id="@+id/txt_add_date"
+            android:focusable="false"
             android:text="@string/btn_set"/>
 
         <TextView
@@ -37,11 +38,12 @@
             android:id="@+id/lbl_add_time"
             android:text="@string/lbl_add_time"/>
 
-        <Button
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lbl_add_time"
             android:id="@+id/txt_add_time"
+            android:focusable="false"
             android:text="@string/btn_set"/>
 
         <TextView
@@ -51,11 +53,12 @@
             android:id="@+id/lbl_add_act_type"
             android:text="@string/lbl_add_act_type"/>
 
-        <Button
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lbl_add_act_type"
             android:id="@+id/btn_add_act_type"
+            android:focusable="false"
             android:text="@string/btn_choose"/>
 
         <TextView
@@ -65,11 +68,12 @@
             android:id="@+id/lbl_add_act_duration"
             android:text="@string/lbl_add_act_duration"/>
 
-        <Button
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lbl_add_act_duration"
             android:id="@+id/btn_add_act_duration"
+            android:focusable="false"
             android:text="@string/btn_set"/>
 
         <TextView
@@ -79,11 +83,12 @@
             android:id="@+id/lbl_add_act_distance"
             android:text="@string/lbl_add_act_distance"/>
 
-        <Button
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lbl_add_act_distance"
             android:id="@+id/btn_add_act_distance"
+            android:focusable="false"
             android:text="@string/btn_set"/>
     </LinearLayout>
 

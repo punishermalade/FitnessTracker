@@ -8,14 +8,14 @@
 
     <string name="btn_seeall_activity">See All Activities</string>
     <string name="btn_addfinish_activity">Add This Activity</string>
-    <string name="lbl_add_date">Date (click on button to set)</string>
-    <string name="lbl_add_time">Current Time (click to set)</string>
+    <string name="lbl_add_date">Date</string>
+    <string name="lbl_add_time">Time of the Day</string>
     <string name="lbl_add_act_type">Activity Type</string>
 
 
     <string name="act_type_dialog_title">Activity Type</string>
-    <string name="lbl_add_act_duration">Duration</string>
-    <string name="lbl_add_act_distance">Distance</string>
+    <string name="lbl_add_act_duration">Duration (mm:ss)</string>
+    <string name="lbl_add_act_distance">Distance (km)</string>
 
     <string name="btn_OK">OK</string>
     <string name="btn_cancel">Cancel</string>
