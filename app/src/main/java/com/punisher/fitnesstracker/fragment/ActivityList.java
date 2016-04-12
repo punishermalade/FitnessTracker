@@ -53,10 +53,10 @@ public class ActivityList extends Fragment  {
                     public void onClick(DialogInterface dialog, int which) {
 
                         AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity(),
-                                                    getString(R.string.progress_bar_deleting_msg)) {
+                                getString(R.string.progress_bar_deleting_msg)) {
                             @Override
                             protected void doTask() {
-                                FitnessActivity activity = (FitnessActivity)parent.getItemAtPosition(position);
+                                FitnessActivity activity = (FitnessActivity) parent.getItemAtPosition(position);
                                 dbManager.deleteActivity(activity);
                             }
 
@@ -87,8 +87,7 @@ public class ActivityList extends Fragment  {
 
     private void loadList(View view) {
 
-        AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity(),
-                                                getString(R.string.progress_bar_loading_msg)) {
+        AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity()) {
 
             private List<FitnessActivity> list = null;
             private FitnessActivity[] arrList = null;
@@ -97,6 +96,7 @@ public class ActivityList extends Fragment  {
             protected void doTask() {
                 list = dbManager.getFitnessActivityList();
                 arrList = list.toArray(new FitnessActivity[0]);
+                Log.i("fitness", "Loading database in DatabaseTask");
             }
 
             @Override

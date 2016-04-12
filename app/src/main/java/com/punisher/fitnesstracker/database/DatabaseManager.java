@@ -24,8 +24,7 @@ public class DatabaseManager {
 
     private FitnessDBHelper _dbHelper = null;
     private Context _context = null;
-    private boolean _hasChanged = false;
-
+    private boolean _hasChanged = true;
 
     /**
      * default constructor
@@ -232,6 +231,12 @@ public class DatabaseManager {
 
         return true;
     }
+
+    public void releaseAll() {
+        _dbHelper.close();
+    }
+
+
 
     private File getLatestBackup(File dir) {
 

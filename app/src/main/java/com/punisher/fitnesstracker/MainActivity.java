@@ -2,21 +2,14 @@ package com.punisher.fitnesstracker;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.punisher.fitnesstracker.database.DatabaseManager;
 import com.punisher.fitnesstracker.task.DatabaseTask;
 
 import java.util.Date;
@@ -55,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
     }
 
     @Override
