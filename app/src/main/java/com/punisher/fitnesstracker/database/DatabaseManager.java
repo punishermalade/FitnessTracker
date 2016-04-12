@@ -118,7 +118,6 @@ public class DatabaseManager {
         Log.i("fitness", "Ext storage readable: " + isExternalStorageReadable() + " writable: " + isExternalStorageWritable());
 
         if (!checkPermissions()) {
-            Toast.makeText(_context, "No access to external storage for read or write operation", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -151,12 +150,8 @@ public class DatabaseManager {
             stream.flush();
             stream.close();
             inStream.close();
-
-            Toast.makeText(_context, "Database copied to external storage", Toast.LENGTH_LONG).show();
-
         }
         catch (Exception ex) {
-            Toast.makeText(_context, "Database copy failed: " + ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             Log.w("fitness", "copying the database to external storage failed", ex);
             return false;
         }
@@ -167,7 +162,6 @@ public class DatabaseManager {
     public boolean importDatabaseFromStorage() {
 
         if (!checkPermissions()) {
-            Toast.makeText(_context, "No access to external storage for read or write operation", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -178,7 +172,6 @@ public class DatabaseManager {
         File savedDB = getLatestBackup(savedDBDir);
 
         if (savedDB == null) {
-            Toast.makeText(_context, "No backup database found", Toast.LENGTH_LONG).show();
             return false;
         }
 
