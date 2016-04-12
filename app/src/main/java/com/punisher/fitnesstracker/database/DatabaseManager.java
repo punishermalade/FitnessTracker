@@ -24,10 +24,26 @@ public class DatabaseManager {
 
     private FitnessDBHelper _dbHelper = null;
     private Context _context = null;
+    private boolean _hasChanged = false;
 
+
+    /**
+     * default constructor
+     * @param c the Context
+     */
     public DatabaseManager(Context c) {
         _dbHelper = new FitnessDBHelper(c);
         _context = c;
+    }
+
+    /**
+     * this boolean indicated if a change in the database has been record since the last getFitnessActivityList()
+     * call. Note: getFitnessActivityList() will read the database and return the latest information, no matter the
+     * value returned by this function.
+     * @return true if the database changed since last retreival, otherwise false.
+     */
+    public boolean hasChanged() {
+        return _hasChanged;
     }
 
     public void insertNewFitnessActivity(FitnessActivity a) {
@@ -45,22 +61,22 @@ public class DatabaseManager {
                 values);
 
         db.close();
+        _hasChanged = true;
 
-        Log.i("Fitness", "new activity added: " + a);
-
-
+        Log.i("Fitness", "new activity added: " + a + " hasChanged:" + _hasChanged);
     }
 
     public void deleteActivity(FitnessActivity a) {
 
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
         db.delete(FitnessDBContract.FitnessEntry.TABLE_NAME,
-                    FitnessDBContract.FitnessEntry._ID + "=" + a.getID(),
-                    null);
+                FitnessDBContract.FitnessEntry._ID + "=" + a.getID(),
+                null);
 
         db.close();
+        _hasChanged = true;
 
-        Log.i("fitness", "activity deleted: " + a.toString());
+        Log.i("fitness", "activity deleted: " + a.toString() + " hasChanged: " + _hasChanged);
     }
 
     public List<FitnessActivity> getFitnessActivityList() {
@@ -108,6 +124,8 @@ public class DatabaseManager {
 
         c.close();
         db.close();
+
+        _hasChanged = false;
 
         return list;
 
@@ -210,6 +228,7 @@ public class DatabaseManager {
         SQLiteDatabase db = _dbHelper.getWritableDatabase();
         db.delete(FitnessDBContract.FitnessEntry.TABLE_NAME, null, null);
         db.close();
+        _hasChanged = true;
 
         return true;
     }
