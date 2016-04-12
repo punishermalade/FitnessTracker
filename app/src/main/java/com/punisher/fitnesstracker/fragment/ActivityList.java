@@ -84,7 +84,6 @@ public class ActivityList extends Fragment  {
         FitnessActivity[] arrList = list.toArray(new FitnessActivity[0]);
 
         _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row, arrList);
-
         _listView.setAdapter(_adapter);
     }
 

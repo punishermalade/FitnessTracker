@@ -46,4 +46,8 @@
     <string name="dialog_activity_action_delete_title">Delete Activity</string>
     <string name="dialog_activity_action_delete">Are you sure you want to delete this activity?</string>
     <string name="dialog_activity_action_edit">Edit</string>
+
+    <string name="progress_bar_loading_msg">Wait while loading the database</string>
+    <string name="progress_bar_clearing_msg">Wait while deleting the database</string>
+    <string name="progress_bar_exporting_msg">Wait while exporting the database</string>
 </resources>
