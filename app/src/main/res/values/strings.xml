@@ -52,4 +52,11 @@
     <string name="progress_bar_exporting_msg">Wait while exporting the database</string>
     <string name="progress_bar_deleting_msg">Wait while deleting the activity</string>
     <string name="progress_bar_adding_msg">Wait while adding the activity</string>
+
+    <string name="add_fitness_distance">Set distance</string>
+    <string name="add_fitness_duration">Set duration</string>
+    <string name="add_fitness_type">Set activity type</string>
+    <string name="add_fitness_time">Set time</string>
+    <string name="add_fitness_day">Set day</string>
+
 </resources>

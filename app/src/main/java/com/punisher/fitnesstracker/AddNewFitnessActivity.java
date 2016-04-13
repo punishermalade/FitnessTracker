@@ -15,6 +15,9 @@ import android.app.DatePickerDialog;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -50,12 +53,13 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private Calendar _currentCalendar = null;
     private SimpleDateFormat _dateFormat = null;
     private SimpleDateFormat _timeFormat = null;
-    private EditText _btnSetDate = null;
     private Date _currentDate = null;
-    private EditText _btnSetTime = null;
-    private EditText _btnSetActivityType = null;
-    private EditText _btnSetDuration = null;
-    private EditText _btnSetDistance = null;
+
+    private TextView _btnSetDate = null;
+    private TextView _btnSetTime = null;
+    private TextView _btnSetActivityType = null;
+    private TextView _btnSetDuration = null;
+    private TextView _btnSetDistance = null;
     private ImageButton _btnCancel = null;
     private ImageButton _btnOk = null;
 
@@ -82,50 +86,62 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         _currentCalendar.setTimeZone(TimeZone.getDefault());
         Log.i("fitness", "Timezone default: " + _currentCalendar.getTimeZone().getDisplayName());
 
-        // set the date button and text with the date
-        _btnSetDate = (EditText)findViewById(R.id.txt_add_date);
-        _btnSetDate.setText(_dateFormat.format(_currentDate));
-        _btnSetDate.setOnClickListener(new View.OnClickListener() {
+        LinearLayout layoutDate = (LinearLayout)findViewById(R.id.layout_date);
+        layoutDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_ADD_DATE);
             }
         });
 
-        // set the time button and text with the current time
-        _btnSetTime = (EditText)findViewById(R.id.txt_add_time);
-        _btnSetTime.setText(_timeFormat.format(_currentDate));
-        _btnSetTime.setOnClickListener(new View.OnClickListener() {
+        // set the date button and text with the date
+        _btnSetDate = (TextView)findViewById(R.id.txt_add_date);
+        _btnSetDate.setText(_dateFormat.format(_currentDate));
+
+
+        LinearLayout layoutTime = (LinearLayout)findViewById(R.id.layout_time);
+        layoutTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_ADD_TIME);
             }
         });
+        // set the time button and text with the current time
+        _btnSetTime = (TextView)findViewById(R.id.txt_add_time);
+        _btnSetTime.setText(_timeFormat.format(_currentDate));
 
-        _btnSetActivityType = (EditText)findViewById(R.id.btn_add_act_type);
-        _btnSetActivityType.setOnClickListener(new View.OnClickListener() {
+
+        LinearLayout layoutActType = (LinearLayout)findViewById(R.id.layout_act_type);
+        layoutActType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_ADD_ACT_TYPE);
             }
         });
 
-        _btnSetDuration = (EditText)findViewById(R.id.btn_add_act_duration);
-        _btnSetDuration.setOnClickListener(new View.OnClickListener() {
+        _btnSetActivityType = (TextView)findViewById(R.id.btn_add_act_type);
+
+
+        LinearLayout layoutDuration = (LinearLayout)findViewById(R.id.layout_duration);
+        layoutDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_ADD_ACT_DURATION);
             }
         });
+        _btnSetDuration = (TextView)findViewById(R.id.btn_add_act_duration);
 
-        _btnSetDistance = (EditText)findViewById(R.id.btn_add_act_distance);
-        _btnSetDistance.setOnClickListener(new View.OnClickListener() {
+
+        LinearLayout layoutDistance = (LinearLayout)findViewById(R.id.layout_distance);
+        layoutDistance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_ADD_ACT_DISTANCE);
             }
         });
+        _btnSetDistance = (TextView)findViewById(R.id.btn_add_act_distance);
 
+        // Setting the cancel and save button
         _btnCancel = (ImageButton)findViewById(R.id.btn_add_activity_cancel);
         _btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
