@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.app.Dialog;
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -54,8 +56,8 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private EditText _btnSetActivityType = null;
     private EditText _btnSetDuration = null;
     private EditText _btnSetDistance = null;
-    private Button _btnCancel = null;
-    private Button _btnOk = null;
+    private ImageButton _btnCancel = null;
+    private ImageButton _btnOk = null;
 
     private FitnessActivity _currentFitness = null;
 
@@ -63,6 +65,11 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_fitness);
+
+        // setting up the toolbar
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_add);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // creating a new DTO to hold information
         _currentFitness = new FitnessActivity();
@@ -119,7 +126,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             }
         });
 
-        _btnCancel = (Button)findViewById(R.id.btn_add_activity_cancel);
+        _btnCancel = (ImageButton)findViewById(R.id.btn_add_activity_cancel);
         _btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +134,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             }
         });
 
-        _btnOk = (Button)findViewById(R.id.btn_add_activity_ok);
+        _btnOk = (ImageButton)findViewById(R.id.btn_add_activity_ok);
         _btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
