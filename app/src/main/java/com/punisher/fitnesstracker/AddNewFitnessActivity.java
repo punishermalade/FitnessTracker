@@ -3,20 +3,17 @@ package com.punisher.fitnesstracker;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.app.Dialog;
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -36,8 +33,6 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
-import com.punisher.fitnesstracker.database.DatabaseManager;
 
 public class AddNewFitnessActivity extends AppCompatActivity implements
                         ActivityTypeDialog.ActivityTypeListener,
@@ -73,7 +68,11 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         // setting up the toolbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_add);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         // creating a new DTO to hold information
         _currentFitness = new FitnessActivity();
@@ -90,10 +89,9 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         layoutDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(DIALOG_ADD_DATE);
+                showInputDialog(DIALOG_ADD_DATE);
             }
         });
-
         // set the date button and text with the date
         _btnSetDate = (TextView)findViewById(R.id.txt_add_date);
         _btnSetDate.setText(_dateFormat.format(_currentDate));
@@ -103,7 +101,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         layoutTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(DIALOG_ADD_TIME);
+                showInputDialog(DIALOG_ADD_TIME);
             }
         });
         // set the time button and text with the current time
@@ -115,10 +113,9 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         layoutActType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(DIALOG_ADD_ACT_TYPE);
+                showInputDialog(DIALOG_ADD_ACT_TYPE);
             }
         });
-
         _btnSetActivityType = (TextView)findViewById(R.id.btn_add_act_type);
 
 
@@ -126,7 +123,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         layoutDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(DIALOG_ADD_ACT_DURATION);
+                showInputDialog(DIALOG_ADD_ACT_DURATION);
             }
         });
         _btnSetDuration = (TextView)findViewById(R.id.btn_add_act_duration);
@@ -136,7 +133,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         layoutDistance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(DIALOG_ADD_ACT_DISTANCE);
+                showInputDialog(DIALOG_ADD_ACT_DISTANCE);
             }
         });
         _btnSetDistance = (TextView)findViewById(R.id.btn_add_act_distance);
@@ -192,8 +189,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         }.execute();
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
+    private void showInputDialog(int id) {
 
         if (id == DIALOG_ADD_DATE) {
 
@@ -205,7 +201,8 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            return new DatePickerDialog(this, myDateListener, year, month, day);
+            Dialog dateDialog = new DatePickerDialog(this, myDateListener, year, month, day);
+            dateDialog.show();
         }
 
         if (id == DIALOG_ADD_TIME) {
@@ -213,7 +210,8 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             calendar.setTime(_currentDate);
             calendar.setTimeZone(TimeZone.getDefault());
 
-            return new TimePickerDialog(this, myTimeListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+            Dialog timeDialog = new TimePickerDialog(this, myTimeListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+            timeDialog.show();
 
         }
 
@@ -227,7 +225,6 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
         if (id == DIALOG_ADD_ACT_DURATION) {
 
-
             DialogFragment actDurationFrag = new ActivityDurationFragment();
             actDurationFrag.onAttach(this);
             actDurationFrag.show(getFragmentManager(), "dialog");
@@ -239,11 +236,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             actDistance.onAttach(this);
             actDistance.show(getFragmentManager(), "dialog");
         }
-
-        return null;
     }
-
-
 
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -268,9 +261,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
             // adding to the FitnessActivity
             _currentFitness.setDayOfActivity(new Date(_currentCalendar.getTimeInMillis()));
-
         }
-
     };
 
     @Override
@@ -308,4 +299,3 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         _currentFitness.setDistance(DistanceUtil.getMeters(k1, k2, m1, m2, m3));
     }
 }
-
