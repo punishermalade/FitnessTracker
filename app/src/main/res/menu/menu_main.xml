@@ -22,10 +22,4 @@
         android:title="@string/action_import_db"
         app:showAsAction="never"></item>
 
-    <item
-        android:id="@+id/action_signin_google"
-        android:orderInCategory="400"
-        android:title="@string/action_signin_google"
-        app:showAsAction="never"
-        android:visible="false"/>
 </menu>

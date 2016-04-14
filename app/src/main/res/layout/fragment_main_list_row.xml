@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="10sp"
     android:paddingTop="10sp">
@@ -36,10 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:textStyle="bold"
-                android:textSize="16sp"
+                android:theme="@style/AppTheme.ListFitnessDateLabel"
                 android:id="@+id/fitness_date"
-                android:text="Tuesday at 10:30, 4 July 2016"/>
+                android:text="@string/list_fitness_default_date"/>
 
         </LinearLayout>
 
@@ -57,17 +57,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:theme="@style/AppTheme.ListFitnessDataLabel"
                     android:id="@+id/fitness_distance"
-                    android:text="10,98"/>
+                    android:text="@string/list_fitness_default_distance"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/lbl_fitness_distance"
-                    android:textStyle="bold"
-                    android:text="Kilometers"/>
+                    android:theme="@style/AppTheme.ListFitnessDescriptionLabel"
+                    android:text="@string/list_fitness_distance_lbl"/>
 
 
             </LinearLayout>
@@ -86,16 +85,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/fitness_duration"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:text="06:03"/>
+                    android:theme="@style/AppTheme.ListFitnessDataLabel"
+                    android:text="@string/list_fitness_default_duration"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/lbl_fitness_duration"
-                    android:textStyle="bold"
-                    android:text="Duration"/>
+                    android:theme="@style/AppTheme.ListFitnessDescriptionLabel"
+                    android:text="@string/list_fitness_duration_lbl"/>
 
 
             </LinearLayout>
@@ -111,16 +109,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/fitness_average"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:text="4:00"/>
+                    android:theme="@style/AppTheme.ListFitnessDataLabel"
+                    android:text="@string/list_fitness_default_average"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/lbl_fitness_average"
-                    android:textStyle="bold"
-                    android:text="min/km"/>
+                    android:theme="@style/AppTheme.ListFitnessDescriptionLabel"
+                    android:text="@string/list_fitness_average_lbl"/>
 
 
             </LinearLayout>

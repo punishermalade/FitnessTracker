@@ -17,4 +17,33 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- custom styles -->
+    <style name="AppTheme.AddFitnessLabel">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AppTheme.AddFitnessIcon">
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="AppTheme.AddFitnessLayout">
+        <item name="android:padding">10dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="AppTheme.ListFitnessDataLabel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.ListFitnessDescriptionLabel">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.ListFitnessDateLabel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

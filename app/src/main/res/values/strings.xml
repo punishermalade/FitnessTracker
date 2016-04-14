@@ -14,8 +14,8 @@
 
 
     <string name="act_type_dialog_title">Activity Type</string>
-    <string name="lbl_add_act_duration">Duration (mm:ss)</string>
-    <string name="lbl_add_act_distance">Distance (km)</string>
+    <string name="lbl_add_act_duration">Duration</string>
+    <string name="lbl_add_act_distance">Distance</string>
 
     <string name="btn_OK">OK</string>
     <string name="btn_cancel">Cancel</string>
@@ -32,10 +32,6 @@
     <string name="lbl_title_dialog_distance">Activity Distance</string>
 
     <string name="btn_stop_activity">Stop this program!</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="action_signin_google">Google Sign-In</string>
     <string name="action_export_db">Export Database</string>
     <string name="action_import_db">Import Database</string>
     <string name="action_clear_db">Clear Database</string>
@@ -58,5 +54,13 @@
     <string name="add_fitness_type">Set activity type</string>
     <string name="add_fitness_time">Set time</string>
     <string name="add_fitness_day">Set day</string>
+
+    <string name="list_fitness_default_date">No date available</string>
+    <string name="list_fitness_default_distance">-.--</string>
+    <string name="list_fitness_default_duration">--.--</string>
+    <string name="list_fitness_default_average">--.--</string>
+    <string name="list_fitness_distance_lbl">Kilometers</string>
+    <string name="list_fitness_duration_lbl">Duration</string>
+    <string name="list_fitness_average_lbl">min/km</string>
 
 </resources>
