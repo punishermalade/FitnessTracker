@@ -2,6 +2,10 @@ package com.punisher.fitnesstracker;
 
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +17,7 @@ import android.app.Dialog;
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -32,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class AddNewFitnessActivity extends AppCompatActivity implements
@@ -57,6 +63,11 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private TextView _btnSetDistance = null;
     private ImageButton _btnCancel = null;
     private ImageButton _btnOk = null;
+    private ImageView _errorDayIcon = null;
+    private ImageView _errorTimeIcon = null;
+    private ImageView _errorType = null;
+    private ImageView _errorDuration = null;
+    private ImageView _errorDistance = null;
 
     private FitnessActivity _currentFitness = null;
 
@@ -73,6 +84,13 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         if (actionBar != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        // getting the error icon resource
+        _errorDayIcon = (ImageView)findViewById(R.id.txt_add_date_error_icon);
+        _errorTimeIcon = (ImageView)findViewById(R.id.txt_add_time_error_icon);
+        _errorType = (ImageView)findViewById(R.id.txt_add_type_error_icon);
+        _errorDuration = (ImageView)findViewById(R.id.txt_add_duration_error_icon);
+        _errorDistance = (ImageView)findViewById(R.id.txt_add_distance_error_icon);
 
         // creating a new DTO to hold information
         _currentFitness = new FitnessActivity();
@@ -151,11 +169,16 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         _btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FitnessValidator validator = new FitnessValidator();
-                validator.validate(_currentFitness);
 
-                if (validator.hasErrors()) {
-                    Toast.makeText(v.getContext(), getString(R.string.errors_validation_failed), Toast.LENGTH_LONG).show();
+                // resetting the default
+                resetErrorIcons();
+
+                FitnessValidator validator = new FitnessValidator();
+                Map<String, Integer> errors = validator.validate(_currentFitness);
+
+                if (!errors.isEmpty()) {
+                    Log.i("fitness", "Validation failed when adding a new fitness acitivty. " + errors.size() + " errors detected");
+                    showFieldInErrors(errors);
                 }
                 else {
                     persistFitness();
@@ -171,6 +194,33 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
         // scraping the old fitness activity
         _currentFitness = new FitnessActivity();
+    }
+
+    private void resetErrorIcons() {
+        _errorDayIcon.setVisibility(View.INVISIBLE);
+        _errorTimeIcon.setVisibility(View.INVISIBLE);
+        _errorType.setVisibility(View.INVISIBLE);
+        _errorDuration.setVisibility(View.INVISIBLE);
+        _errorDistance.setVisibility(View.INVISIBLE);
+    }
+
+    private void showFieldInErrors(Map<String, Integer> errors) {
+
+        if (errors.containsKey("Day")) {
+            _errorDayIcon.setVisibility(View.VISIBLE);
+        }
+
+        if (errors.containsKey("Duration")) {
+           _errorDuration.setVisibility(View.VISIBLE);
+        }
+
+        if (errors.containsKey("Distance")) {
+            _errorDistance.setVisibility(View.VISIBLE);
+        }
+
+        if (errors.containsKey("FitnessType")) {
+            _errorType.setVisibility(View.VISIBLE);
+        }
     }
 
     private void persistFitness() {

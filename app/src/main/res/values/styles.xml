@@ -37,6 +37,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppTheme.AddFitnessFieldErrorIcon">
+        <item name="android:visibility">invisible</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/ic_add_fitness_field_error</item>
+    </style>
+
     <style name="AppTheme.ListFitnessDescriptionLabel">
         <item name="android:textStyle">bold</item>
     </style>

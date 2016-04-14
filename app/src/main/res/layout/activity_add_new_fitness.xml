@@ -56,17 +56,28 @@
             android:theme="@style/AppTheme.AddFitnessLayout">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AddFitnessIcon"
                 android:src="@drawable/ic_add_fitness_day"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4"
                 android:layout_height="match_parent"
                 android:id="@+id/txt_add_date"
                 android:theme="@style/AppTheme.AddFitnessLabel"
                 android:text="@string/add_fitness_day"/>
+
+
+            <ImageButton
+                android:id="@+id/txt_add_date_error_icon"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:theme="@style/AppTheme.AddFitnessFieldErrorIcon"/>
+
 
         </LinearLayout>
 
@@ -78,18 +89,27 @@
             android:theme="@style/AppTheme.AddFitnessLayout">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/lbl_add_time"
                 android:theme="@style/AppTheme.AddFitnessIcon"
                 android:src="@drawable/ic_add_fitness_time_day" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4"
                 android:layout_height="match_parent"
                 android:id="@+id/txt_add_time"
                 android:theme="@style/AppTheme.AddFitnessLabel"
                 android:text="@string/add_fitness_time"/>
+
+            <ImageButton
+                android:id="@+id/txt_add_time_error_icon"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:theme="@style/AppTheme.AddFitnessFieldErrorIcon"/>
 
         </LinearLayout>
 
@@ -100,18 +120,27 @@
             android:theme="@style/AppTheme.AddFitnessLayout">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/lbl_add_act_type"
                 android:theme="@style/AppTheme.AddFitnessIcon"
                 android:src="@drawable/ic_add_fitness_type"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4"
                 android:layout_height="match_parent"
                 android:id="@+id/btn_add_act_type"
                 android:theme="@style/AppTheme.AddFitnessLabel"
                 android:text="@string/add_fitness_type"/>
+
+            <ImageButton
+                android:id="@+id/txt_add_type_error_icon"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:theme="@style/AppTheme.AddFitnessFieldErrorIcon"/>
 
         </LinearLayout>
 
@@ -122,18 +151,27 @@
             android:theme="@style/AppTheme.AddFitnessLayout">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AddFitnessIcon"
                 android:src="@drawable/ic_add_fitness_time"
                 android:id="@+id/lbl_add_act_duration"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4"
                 android:layout_height="match_parent"
                 android:id="@+id/btn_add_act_duration"
                 android:theme="@style/AppTheme.AddFitnessLabel"
                 android:text="@string/add_fitness_duration"/>
+
+            <ImageButton
+                android:id="@+id/txt_add_duration_error_icon"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:theme="@style/AppTheme.AddFitnessFieldErrorIcon"/>
 
         </LinearLayout>
 
@@ -144,18 +182,27 @@
             android:theme="@style/AppTheme.AddFitnessLayout">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AddFitnessIcon"
                 android:id="@+id/lbl_add_act_distance"
                 android:src="@drawable/ic_add_fitness_distance"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4"
                 android:layout_height="match_parent"
                 android:id="@+id/btn_add_act_distance"
                 android:theme="@style/AppTheme.AddFitnessLabel"
                 android:text="@string/add_fitness_distance"/>
+
+            <ImageButton
+                android:id="@+id/txt_add_distance_error_icon"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:theme="@style/AppTheme.AddFitnessFieldErrorIcon"/>
 
         </LinearLayout>
 
