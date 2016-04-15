@@ -19,12 +19,12 @@ public final class Ternary {
         setValue(v);
     }
 
-    public int setValue(int v) {
+    public Ternary setValue(int v) {
         if (v < 0 || v > 2) {
             throw new RuntimeException("Values between 0 and 2 are acceptable");
         }
         _currentValue = v;
-        return _currentValue
+        return this;
     }
 
     public int getValue() {
