@@ -118,7 +118,7 @@ public class DatabaseManager {
             list.add(act);
             c.moveToNext();
 
-            Log.i("Fitness", "new activity found: " + act);
+            Log.d("Fitness", "new activity found: " + act);
         }
 
         c.close();

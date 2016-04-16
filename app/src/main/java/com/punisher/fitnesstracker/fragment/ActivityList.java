@@ -19,8 +19,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ToggleButton;
 
 import com.punisher.fitnesstracker.R;
 import com.punisher.fitnesstracker.adapter.FitnessActivityAdapterList;
@@ -29,6 +33,7 @@ import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.task.DatabaseTask;
 import com.punisher.fitnesstracker.util.Ternary;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +66,7 @@ public class ActivityList extends Fragment  {
     }
 
     private Map<Integer, Ternary> _sortStatus = null;
+    private Map<Integer, Boolean> _filterStatus = null;
 
     private Drawable _sortAscendingIcon = null;
     private Drawable _sortDescendingIcon = null;
@@ -70,7 +76,15 @@ public class ActivityList extends Fragment  {
     private Button _sortDurationBtn = null;
     private Button _sortAverageBtn = null;
 
+    private ToggleButton _btnFilterSwimming = null;
+    private ToggleButton _btnFilterRunning = null;
+    private ToggleButton _btnFilterBiking = null;
+
+    private Filter _filter = null;
+
     private View _view = null;
+
+    private Comparator<FitnessActivity> _currentComparator = null;
 
     /**
      * a reference to the list view UI element
@@ -83,7 +97,7 @@ public class ActivityList extends Fragment  {
     private ArrayAdapter<FitnessActivity> _adapter = null;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState){
 
         Log.i("fitness", "ActivityList Fragment onCreateView");
 
@@ -142,7 +156,7 @@ public class ActivityList extends Fragment  {
         _sortDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(R.id.sort_date_icon);
+                handleSortChange(_sortDateBtn, R.id.sort_date_icon);
             }
         });
 
@@ -150,7 +164,7 @@ public class ActivityList extends Fragment  {
         _sortDistanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(R.id.sort_distance_icon);
+                handleSortChange(_sortDistanceBtn, R.id.sort_distance_icon);
             }
         });
 
@@ -158,7 +172,7 @@ public class ActivityList extends Fragment  {
         _sortDurationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(R.id.sort_duration_icon);
+                handleSortChange(_sortDurationBtn, R.id.sort_duration_icon);
             }
         });
 
@@ -166,11 +180,80 @@ public class ActivityList extends Fragment  {
         _sortAverageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(R.id.sort_average_icon);
+                handleSortChange(_sortAverageBtn, R.id.sort_average_icon);
             }
         });
 
-        handleSortChange(R.id.sort_date_icon);
+        handleSortChange(_sortDateBtn, R.id.sort_date_icon);
+
+        // setting the filter settings
+        _filterStatus = new HashMap<Integer, Boolean>();
+        _filterStatus.put(R.id.filter_swimming, true);
+        _filterStatus.put(R.id.filter_running, true);
+        _filterStatus.put(R.id.filter_biking, true);
+        updateFilterUI(R.id.filter_swimming, true);
+        updateFilterUI(R.id.filter_running, true);
+        updateFilterUI(R.id.filter_biking, true);
+
+        _btnFilterSwimming = (ToggleButton)_view.findViewById(R.id.filter_swimming);
+        _btnFilterSwimming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i("fitness", "btnFilterSwimming: " + isChecked);
+                handleFilterChange(R.id.filter_swimming, isChecked);
+            }
+        });
+
+        _btnFilterRunning = (ToggleButton)_view.findViewById(R.id.filter_running);
+        _btnFilterRunning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i("fitness", "btnFilterRunning: " +  isChecked);
+                handleFilterChange(R.id.filter_running, isChecked);
+            }
+        });
+
+        _btnFilterBiking = (ToggleButton)_view.findViewById(R.id.filter_biking);
+        _btnFilterBiking.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i("fitness", "btnFilterBiking: " + isChecked);
+                handleFilterChange(R.id.filter_biking, isChecked);
+            }
+        });
+
+        _filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                Log.i("fitness", "Filtering on: " + constraint);
+                FilterResults results = new FilterResults();
+                DatabaseManager dbManager = new DatabaseManager(getActivity());
+                List<FitnessActivity> listRes = new ArrayList<FitnessActivity>();
+                List<FitnessActivity> list = dbManager.getFitnessActivityList();
+                for (FitnessActivity fa : list) {
+                    if (constraint.toString().contains(fa.getFitnessType().toString().toUpperCase())) {
+                        listRes.add(fa);
+                    }
+                }
+
+                results.values = listRes;
+                results.count = listRes.size();
+                Log.i("fitness", "Filter result count: " + results.count);
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                List<FitnessActivity> list = (List<FitnessActivity>)results.values;
+                _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row,
+                                                            list.toArray(new FitnessActivity[0]));
+                _listView.setAdapter(_adapter);
+
+                if (_currentComparator != null) {
+                    sortFitnessActivity(_currentComparator);
+                }
+            }
+        };
 
         return _view;
     }
@@ -183,6 +266,8 @@ public class ActivityList extends Fragment  {
         if (_adapter != null && comparator != null) {
             _adapter.sort(comparator);
         }
+
+        _currentComparator = comparator;
     }
 
     @Override
@@ -192,12 +277,52 @@ public class ActivityList extends Fragment  {
         loadList(getView());
     }
 
-    private void handleSortChange(int id) {
+    private void handleFilterChange(int id, boolean active) {
+        Log.i("fitness", "handling filter change for id: " + id + " Active: " + active);
+        _filterStatus.put(id, active);
+        applyFilters();
+        updateFilterUI(id, active);
+    }
+
+    private void applyFilters() {
+        if (_filter != null) {
+
+            StringBuilder builder = new StringBuilder();
+            if (_filterStatus.get(R.id.filter_swimming) == true) {
+                builder.append(getString(R.string.filter_button_swimming).toUpperCase()).append(" ");
+            }
+
+            if (_filterStatus.get(R.id.filter_running) == true) {
+                builder.append(getString(R.string.filter_button_running).toUpperCase()).append(" ");
+            }
+
+            if (_filterStatus.get(R.id.filter_biking) == true) {
+                builder.append(getString(R.string.filter_button_biking).toUpperCase()).append(" ");
+            }
+
+            _filter.filter(builder.toString());
+        }
+    }
+
+    private void updateFilterUI(int id, boolean active) {
+        ToggleButton button = (ToggleButton)_view.findViewById(id);
+        if (button != null) {
+
+            if (active) {
+                button.setBackgroundColor(getResources().getColor(R.color.colorActiveFilter));
+            }
+            else {
+                button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            }
+        }
+    }
+
+    private void handleSortChange(Button btn, int id) {
         Log.i("fitness", "Handling a sort change from button id: " + id);
         switchSortStatus(id);
         applySort(id);
         for (int key : _sortStatus.keySet()) {
-            updateUISortIndicator(key, _sortStatus.get(key));
+            updateUISortIndicator(btn, key, _sortStatus.get(key));
         }
     }
 
@@ -250,15 +375,17 @@ public class ActivityList extends Fragment  {
         }
     }
 
-    private void updateUISortIndicator(int ressId, Ternary t) {
+    private void updateUISortIndicator(Button btn, int ressId, Ternary t) {
 
         ImageView v = (ImageView)_view.findViewById(ressId);
 
         if (t.getValue() == Ternary.UNDEFINED) {
             v.setVisibility(View.INVISIBLE);
+            //btn.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         }
         else {
             v.setVisibility(View.VISIBLE);
+            //btn.setBackgroundColor(getResources().getColor(R.color.colorActiveSort));
 
             if (t.getValue() == Ternary.TRUE) {
                 v.setImageDrawable(_sortAscendingIcon);

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.punisher.fitnesstracker.R;
@@ -14,7 +16,9 @@ import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.util.FormatUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -25,12 +29,36 @@ public class FitnessActivityAdapterList extends ArrayAdapter<FitnessActivity> {
     private Context _context;
     private int _ressourceId;
     private FitnessActivity[] _data;
+    private Filter _filter = null;
 
     public FitnessActivityAdapterList(Context context, int resource, FitnessActivity[] fa) {
         super(context, resource, fa);
         _context = context;
         _ressourceId = resource;
         _data = fa;
+
+        _filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<FitnessActivity> list = new ArrayList<FitnessActivity>();
+                for (FitnessActivity fa : _data) {
+                    if (fa.getFitnessType().toString().contains(constraint)) {
+                        list.add(fa);
+                    }
+                }
+
+                results.values = list;
+                results.count = list.size();
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                List<FitnessActivity> list = (List<FitnessActivity>)results.values;
+                _data = list.toArray(new FitnessActivity[0]);
+            }
+        };
     }
 
     @Override
@@ -65,6 +93,13 @@ public class FitnessActivityAdapterList extends ArrayAdapter<FitnessActivity> {
         holder.txtDistance.setText(FormatUtil.getDistance(fitness.getDistance()));
         return row;
     }
+
+    @Override
+    public Filter getFilter() {
+        return _filter;
+    }
+
+
 
     private int getFitnessTypeImage(FitnessActivity.FitnessType ft) {
         if (ft == FitnessActivity.FitnessType.BIKING) {

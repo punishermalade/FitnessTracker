@@ -61,6 +61,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton filterBtn = (ImageButton)findViewById(R.id.toolbar_filter_button);
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout l = (LinearLayout)findViewById(R.id.layout_filter_button_list);
+                if (l.getVisibility() == View.GONE) {
+                    l.setVisibility(View.VISIBLE);
+                }
+                else if (l.getVisibility() == View.VISIBLE) {
+                    l.setVisibility(View.GONE);
+                }
+            }
+        });
+
         ImageButton btnAddActivity = (ImageButton)findViewById(R.id.btnimg_add_activity);
         btnAddActivity.setOnClickListener(new View.OnClickListener() {
 

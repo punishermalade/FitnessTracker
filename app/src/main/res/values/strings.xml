@@ -79,4 +79,8 @@
     <string name="sort_button_duration">Dur</string>
     <string name="sort_button_average">Avg</string>
 
+    <string name="filter_button_running">Running</string>
+    <string name="filter_button_swimming">Swimming</string>
+    <string name="filter_button_biking">Biking</string>
+
 </resources>
