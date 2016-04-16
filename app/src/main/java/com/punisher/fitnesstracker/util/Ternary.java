@@ -5,9 +5,9 @@ package com.punisher.fitnesstracker.util;
  */
 public final class Ternary {
 
-    public static int FALSE = 0;
+    public static int FALSE = 2;
     public static int TRUE = 1;
-    public static int UNDEFINED = 2;
+    public static int UNDEFINED = 0;
 
     private int _currentValue;
 

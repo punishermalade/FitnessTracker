@@ -1,7 +1,10 @@
 package com.punisher.fitnesstracker;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,24 +15,51 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.punisher.fitnesstracker.dialog.ActivitySortFragment;
+import com.punisher.fitnesstracker.dto.FitnessActivity;
+import com.punisher.fitnesstracker.fragment.ActivityList;
 import com.punisher.fitnesstracker.task.DatabaseTask;
 
+import java.util.Comparator;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
+
+    private ActivityList _listFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("fitness", "app shut down at: " + new Date(System.currentTimeMillis()));
-
+        // set the view and the toolbar
         Log.i("fitness", "MainActivity.onCreate()");
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // get a reference on the list fragment
+        _listFragment = (ActivityList)getFragmentManager().findFragmentById(R.id.fragment_personal_list);
+
+        // setting the sort button
+        ImageButton sortBtn = (ImageButton)findViewById(R.id.toolbar_sort_button);
+        sortBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout l = (LinearLayout)findViewById(R.id.layout_sort_button_list);
+                if (l.getVisibility() == View.GONE) {
+                    l.setVisibility(View.VISIBLE);
+                }
+                else if (l.getVisibility() == View.VISIBLE) {
+                    l.setVisibility(View.GONE);
+                }
+            }
+        });
 
         ImageButton btnAddActivity = (ImageButton)findViewById(R.id.btnimg_add_activity);
         btnAddActivity.setOnClickListener(new View.OnClickListener() {

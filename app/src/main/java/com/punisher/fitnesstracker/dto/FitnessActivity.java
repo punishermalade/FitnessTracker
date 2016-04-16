@@ -75,4 +75,14 @@ public class FitnessActivity {
                 String.valueOf(getDuration()) + " " +
                 String.valueOf(getDistance());
     }
+
+    /**
+     * calculate the average time for this FitnessActivity
+     * @return the average time
+     */
+    public float getAverage() {
+        float speed = (float)_distance / (float)_duration;
+        float result = 1000 / speed;
+        return Math.round(result);
+    }
 }

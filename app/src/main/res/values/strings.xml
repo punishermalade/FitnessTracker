@@ -43,6 +43,17 @@
     <string name="dialog_activity_action_delete">Are you sure you want to delete this activity?</string>
     <string name="dialog_activity_action_edit">Edit</string>
 
+    <string name="dialog_activity_sort_title">Choose sort options</string>
+    <string name="dialog_activity_sort_duration_asc">Duration (ascending)</string>
+    <string name="dialog_activity_sort_duration_desc">Duration (descending)</string>
+    <string name="dialog_activity_sort_distance_asc">Distance (ascending)</string>
+    <string name="dialog_activity_sort_distance_desc">Distance (descending)</string>
+    <string name="dialog_activity_sort_average_asc">Average (ascending)</string>
+    <string name="dialog_activity_sort_average_desc">Average (descending)</string>
+    <string name="dialog_activity_sort_date_asc">Date (ascending)</string>
+    <string name="dialog_activity_sort_date_desc">Date (descending)</string>
+
+
     <string name="progress_bar_loading_msg">Wait while loading the database</string>
     <string name="progress_bar_clearing_msg">Wait while deleting the database</string>
     <string name="progress_bar_exporting_msg">Wait while exporting the database</string>
@@ -62,5 +73,10 @@
     <string name="list_fitness_distance_lbl">Kilometers</string>
     <string name="list_fitness_duration_lbl">Duration</string>
     <string name="list_fitness_average_lbl">min/km</string>
+
+    <string name="sort_button_date">Date</string>
+    <string name="sort_button_distance">Dist</string>
+    <string name="sort_button_duration">Dur</string>
+    <string name="sort_button_average">Avg</string>
 
 </resources>
