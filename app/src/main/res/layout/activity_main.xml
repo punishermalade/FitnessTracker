@@ -29,7 +29,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/ic_menu_sort_by_size"/>
-            
+
             <ImageButton
                 android:id="@+id/toolbar_filter_button"
                 android:layout_width="wrap_content"

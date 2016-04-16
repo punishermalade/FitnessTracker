@@ -398,6 +398,14 @@ public class ActivityList extends Fragment  {
 
     private void loadList(View view) {
 
+        if (_filter != null) {
+            applyFilters();
+        }
+
+        if (_currentComparator != null) {
+            sortFitnessActivity(_currentComparator);
+        }
+
         AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity()) {
 
             private List<FitnessActivity> list = null;
@@ -414,8 +422,16 @@ public class ActivityList extends Fragment  {
             protected void refreshUI() {
                 _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row, arrList);
                 _listView.setAdapter(_adapter);
+
+                if (_filter != null) {
+                    applyFilters();
+                }
+
+                if (_currentComparator != null) {
+                    sortFitnessActivity(_currentComparator);
+                }
             }
-        }.execute();
+        };
     }
 
     private static void buildStandardComparator() {
