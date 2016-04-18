@@ -1,14 +1,12 @@
 package com.punisher.fitnesstracker.fragment;
 
-
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.v7.widget.Toolbar;
-
 import com.punisher.fitnesstracker.R;
 
 /**
- * Created by punisher on 2016-04-18.
+ * represents a SettingsFragment that can be used in any other activities. This method follows the
+ * Android development guidelines
  */
 public class SettingsFragement extends PreferenceFragment {
 

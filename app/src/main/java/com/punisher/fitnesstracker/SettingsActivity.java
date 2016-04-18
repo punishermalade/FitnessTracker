@@ -2,12 +2,11 @@ package com.punisher.fitnesstracker;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.support.v7.widget.Toolbar;
-
 import com.punisher.fitnesstracker.fragment.SettingsFragement;
 
 /**
- * Created by punisher on 2016-04-18.
+ * encapsulates an Activity to display a list of preference. This activity uses a Fragment to build
+ * and display the list as recommended by the Android Development Guidelines
  */
 public class SettingsActivity extends PreferenceActivity {
 
@@ -18,7 +17,5 @@ public class SettingsActivity extends PreferenceActivity {
         getFragmentManager().beginTransaction().replace(
                 android.R.id.content,
                 new SettingsFragement()).commit();
-
     }
-
 }

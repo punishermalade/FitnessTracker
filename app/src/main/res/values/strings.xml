@@ -38,6 +38,9 @@
 
     <string name="dialog_clear_db_confirmation">All data will be lost. Continue?</string>
     <string name="dialog_import_db_confirmation">Current data will be replaced by a backup database. Continue?</string>
+    <string name="dialog_clear_db_completed">The database has been cleared</string>
+    <string name="dialog_import_db_completed">A new database has been imported</string>
+    <string name="dialog_export_db_completed">The current database has been exported</string>
 
     <string name="dialog_activity_action_delete_title">Delete Activity</string>
     <string name="dialog_activity_action_delete">Are you sure you want to delete this activity?</string>

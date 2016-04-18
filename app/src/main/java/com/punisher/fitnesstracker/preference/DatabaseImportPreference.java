@@ -1,19 +1,22 @@
 package com.punisher.fitnesstracker.preference;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.preference.Preference;
 import android.util.AttributeSet;
-import android.util.Log;
-
+import android.widget.Toast;
 import com.punisher.fitnesstracker.R;
 import com.punisher.fitnesstracker.task.DatabaseTask;
 
 /**
- * Created by punisher on 2016-04-18.
+ * represents the Import Database preferences item. It creates the DatabaseTask to import the most
+ * recent database backup.
  */
 public class DatabaseImportPreference extends DatabasePreference {
 
+    /**
+     * represents the default constructor
+     * @param c the context
+     * @param a the default values
+     */
     public DatabaseImportPreference(Context c, AttributeSet a) {
         super(c, a);
     }
@@ -29,7 +32,7 @@ public class DatabaseImportPreference extends DatabasePreference {
 
             @Override
             protected void refreshUI() {
-                // no UI to be refreshed here
+                Toast.makeText(getContext(), getContext().getString(R.string.dialog_import_db_completed), Toast.LENGTH_LONG).show();
             }
         };
     }

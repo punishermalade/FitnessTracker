@@ -1,32 +1,13 @@
 package com.punisher.fitnesstracker;
 
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.punisher.fitnesstracker.dialog.ActivitySortFragment;
-import com.punisher.fitnesstracker.dto.FitnessActivity;
-import com.punisher.fitnesstracker.fragment.ActivityList;
-import com.punisher.fitnesstracker.task.DatabaseTask;
-
-import java.util.Comparator;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 

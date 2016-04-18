@@ -4,15 +4,21 @@ import android.content.Context;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.punisher.fitnesstracker.R;
 import com.punisher.fitnesstracker.task.DatabaseTask;
 
 /**
- * Created by punisher on 2016-04-18.
+ * represent the Database Export preference item. It creates the DatabaseTask for the parent class.
  */
 public class DatabaseExportPreference extends DatabasePreference {
 
+    /**
+     * default constructor for the preference
+     * @param c the context
+     * @param attr the default values
+     */
     public DatabaseExportPreference(Context c, AttributeSet attr) {
         super(c, attr);
     }
@@ -27,7 +33,7 @@ public class DatabaseExportPreference extends DatabasePreference {
 
             @Override
             protected void refreshUI() {
-                // no UI to update!
+                Toast.makeText(getContext(), getContext().getString(R.string.dialog_export_db_completed), Toast.LENGTH_LONG).show();
             }
         };
     }

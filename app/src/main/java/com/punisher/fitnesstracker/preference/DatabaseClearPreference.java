@@ -1,24 +1,22 @@
 package com.punisher.fitnesstracker.preference;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.preference.Preference;
 import android.util.AttributeSet;
-import android.util.Log;
-
+import android.widget.Toast;
 import com.punisher.fitnesstracker.R;
 import com.punisher.fitnesstracker.task.DatabaseTask;
 
-import org.w3c.dom.Attr;
-
 /**
- * Created by punisher on 2016-04-18.
+ * represents the Clear Database preference item. It creates the DatabaseTask to clear the database
+ * for the parent class.
  */
 public class DatabaseClearPreference extends DatabasePreference {
 
+    /**
+     * represents the default constructor
+     * @param c the context
+     * @param a the default values
+     */
     public DatabaseClearPreference(Context c, AttributeSet a) {
         super(c, a);
     }
@@ -33,7 +31,7 @@ public class DatabaseClearPreference extends DatabasePreference {
 
             @Override
             protected void refreshUI() {
-                // no UI to be refreshed here
+                Toast.makeText(getContext(), getContext().getString(R.string.dialog_clear_db_completed), Toast.LENGTH_LONG).show();
             }
         };
     }
