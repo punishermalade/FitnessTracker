@@ -83,4 +83,14 @@
     <string name="filter_button_swimming">Swimming</string>
     <string name="filter_button_biking">Biking</string>
 
+    <string name="pref_db_category_title">Database / Backup</string>
+    <string name="pref_db_category_summary">Database backup and recovery options</string>
+    <string name="pref_db_export_title">Export Database</string>
+    <string name="pref_db_export_summary">Export the database in the device storage memory</string>
+    <string name="pref_db_import_title">Import Database</string>
+    <string name="pref_db_import_summary">Import the database from the device storage memory</string>
+    <string name="pref_db_clear_title">Clear Database</string>
+    <string name="pref_db_clear_summary">Erase all the data from the database</string>
+
+
 </resources>

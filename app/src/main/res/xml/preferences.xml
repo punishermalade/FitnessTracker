@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_db_category_title"
+        android:summary="@string/pref_db_category_summary">
+
+        <com.punisher.fitnesstracker.preference.DatabaseExportPreference
+            android:key="export_db"
+            android:title="@string/pref_db_export_title"
+            android:summary="@string/pref_db_export_summary" />
+
+        <com.punisher.fitnesstracker.preference.DatabaseImportPreference
+            android:key="import_db"
+            android:title="@string/pref_db_import_title"
+            android:summary="@string/pref_db_import_summary" />
+
+        <com.punisher.fitnesstracker.preference.DatabaseClearPreference
+            android:key="clear_db"
+            android:title="@string/pref_db_clear_title"
+            android:summary="@string/pref_db_clear_summary" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
