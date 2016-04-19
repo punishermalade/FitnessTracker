@@ -94,6 +94,8 @@
     <string name="pref_db_import_summary">Import the database from the device storage memory</string>
     <string name="pref_db_clear_title">Clear Database</string>
     <string name="pref_db_clear_summary">Erase all the data from the database</string>
+    <string name="title_activity_statistics">Statistics</string>
 
+    <string name="stat_loading_dialog_text">Wait while loading the statistics</string>
 
 </resources>

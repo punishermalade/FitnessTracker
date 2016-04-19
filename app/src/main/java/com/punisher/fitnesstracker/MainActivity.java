@@ -70,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addActivity);
             }
         });
+
+        ImageButton statsBtn = (ImageButton)findViewById(R.id.toolbar_stats_button);
+        statsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent statActivity = new Intent(v.getContext(), StatisticsActivity.class);
+                startActivity(statActivity);
+            }
+        });
     }
 
     @Override
