@@ -66,11 +66,8 @@ public class StatisticsFragment extends Fragment {
         TextView lDur = (TextView)_view.findViewById(R.id.stat_longest_duration);
         lDur.setText(FormatUtil.formatDuration((int)stat.getValues(StatisticManager.LONGEST_DURATION)));
 
-        /*
         TextView bAvg = (TextView)_view.findViewById(R.id.stat_best_average);
-        Integer avg = Integer.parseInt(Float.toString((float)stat.getValues(StatisticManager.BEST_AVERAGE)));
-        bAvg.setText(FormatUtil.formatDuration(avg));
-        */
+        bAvg.setText(FormatUtil.formatAverage((int)stat.getValues(StatisticManager.BEST_AVERAGE)));
 
         TextView tAct = (TextView)_view.findViewById(R.id.stat_total_activity);
         tAct.setText(String.valueOf(stat.getValues(StatisticManager.TOTAL_ACTIVITY)));

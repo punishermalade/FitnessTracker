@@ -33,9 +33,24 @@ public class FormatUtil {
     }
 
     public static String formatDuration(int d) {
-        int min = d / 60;
-        int sec = d % 60;
-        return String.format("%02d:%02d", min, sec);
+
+        int hour = d / 3600;
+        int leftHour = d % 3600;
+
+        int min = leftHour / 60;
+        int sec = leftHour % 60;
+
+        if (hour > 0 && hour < 9) {
+            return String.format("%d:%02d:%02d", hour, min, sec);
+        }
+        else if (hour > 9) {
+            return String.format("%02d:%02d:%02d", hour, min, sec);
+        }
+        else {
+            return String.format("%02d:%02d", min, sec);
+        }
+
+
     }
 
     public static String formatDate(Date d) {
@@ -47,5 +62,9 @@ public class FormatUtil {
         float speed = (float)dist / (float)dur;
         float result = 1000 / speed;
         return formatDuration(Math.round(result));
+    }
+
+    public static String formatAverage(float avg) {
+        return formatDuration(Math.round(avg));
     }
 }

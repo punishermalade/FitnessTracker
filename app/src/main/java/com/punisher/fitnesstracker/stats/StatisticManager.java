@@ -71,11 +71,14 @@ public class StatisticManager {
             _compiledStats.put(LONGEST_DURATION, longestDuration);
 
             // find the best average
-            float bestAverage = 0;
+            int bestAverage = Integer.MAX_VALUE;
             for (FitnessActivity a : list) {
                 if (a.getAverage() < bestAverage) {
                     bestAverage = a.getAverage();
                 }
+            }
+            if (list.size() == 0) {
+                bestAverage = 0;
             }
             _compiledStats.put(BEST_AVERAGE, bestAverage);
         }

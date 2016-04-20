@@ -2,6 +2,7 @@ package com.punisher.fitnesstracker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.punisher.fitnesstracker.fragment.SettingsFragement;
 
@@ -14,9 +15,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+
+        Toolbar bar = (Toolbar)findViewById(R.id.toolbar_settings);
+        setSupportActionBar(bar);
 
         getFragmentManager().beginTransaction().replace(
-                android.R.id.content,
+                R.id.preference_container,
                 new SettingsFragement()).commit();
     }
 }

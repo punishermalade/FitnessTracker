@@ -56,12 +56,7 @@
                 android:layout_marginRight="10dp"
                 android:visibility="visible"
                 android:background="@android:color/transparent"
-                android:src="@android:drawable/ic_dialog_info"/>
-
-
-
-
-
+                android:src="@android:drawable/ic_menu_agenda"/>
 
         </android.support.v7.widget.Toolbar>
 
