@@ -73,6 +73,7 @@
     <string name="list_fitness_default_distance">-.--</string>
     <string name="list_fitness_default_duration">--.--</string>
     <string name="list_fitness_default_average">--.--</string>
+    <string name="list_fitness_unset_number">---</string>
     <string name="list_fitness_distance_lbl">Kilometers</string>
     <string name="list_fitness_duration_lbl">Duration</string>
     <string name="list_fitness_average_lbl">min/km</string>
@@ -97,5 +98,12 @@
     <string name="title_activity_statistics">Statistics</string>
 
     <string name="stat_loading_dialog_text">Wait while loading the statistics</string>
+    <string name="stat_data_longest_distance_lbl">Longest Distance: </string>
+    <string name="stat_data_longest_duration_lbl">Longest Duration: </string>
+    <string name="stat_data_total_distance_lbl">Total Distance: </string>
+    <string name="stat_data_total_duration_lbl">Total Duration: </string>
+    <string name="stat_data_best_average_lbl">Best Average: </string>
+    <string name="stat_data_total_activity_lbl">Total Activities: </string>
+
 
 </resources>

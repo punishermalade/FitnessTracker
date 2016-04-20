@@ -54,7 +54,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/ic_dialog_info"/>
 

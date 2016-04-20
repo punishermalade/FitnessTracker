@@ -36,7 +36,7 @@ public class StatisticManager {
      */
     public void crunchStatistic(List<FitnessActivity> list) {
 
-        if (list != null && list.size() > 0) {
+        if (list != null) {
 
             // calculate the total activity
             _compiledStats.put(TOTAL_ACTIVITY, list.size());
@@ -53,7 +53,7 @@ public class StatisticManager {
             _compiledStats.put(TOTAL_DURATION, totalDuration);
 
             // find the longest distance
-            int longestDistanace = list.get(0).getDistance();
+            int longestDistanace = 0;
             for (FitnessActivity a : list) {
                 if (a.getDistance() > longestDistanace) {
                     longestDistanace = a.getDistance();
@@ -62,7 +62,7 @@ public class StatisticManager {
             _compiledStats.put(LONGEST_DISTANCE, longestDistanace);
 
             // find the longest duration
-            int longestDuration = list.get(0).getDuration();
+            int longestDuration = 0;
             for (FitnessActivity a : list) {
                 if (a.getDuration() > longestDuration) {
                     longestDuration = a.getDuration();

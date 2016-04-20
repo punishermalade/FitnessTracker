@@ -1,24 +1,17 @@
 package com.punisher.fitnesstracker.fragment;
 
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.punisher.fitnesstracker.R;
-import com.punisher.fitnesstracker.database.DatabaseManager;
-import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.stats.StatisticManager;
-import com.punisher.fitnesstracker.task.StatisticCompilationTask;
+import com.punisher.fitnesstracker.util.FormatUtil;
 
-import java.util.List;
 
 /**
  * encapsulate the StatisticsFragment behavior
@@ -54,28 +47,33 @@ public class StatisticsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i("fitness", "StatisticsFragment OnResume");
-
-        AsyncTask<Void, Void, Void> task = new StatisticCompilationTask(getActivity()) {
-            @Override
-            protected List<FitnessActivity> getActivityList() {
-                return getDatabaseManager().getFitnessActivityList();
-            }
-
-            @Override
-            protected void updateUI(StatisticManager manager) {
-                updateUIWithStat(manager);
-            }
-        }.execute();
-
     }
 
     /**
      * update the UI with the compiled stat
      * @param stat
      */
-    private void updateUIWithStat(StatisticManager stat) {
-        TextView v = (TextView)_view.findViewById(R.id.stat_longest_duration);
-        v.setText(String.valueOf(stat.getValues(StatisticManager.LONGEST_DURATION)));
+    public void updateUIWithStat(StatisticManager stat) {
+        TextView tDist = (TextView)_view.findViewById(R.id.stat_total_distance);
+        tDist.setText(FormatUtil.getDistance((int) stat.getValues(StatisticManager.TOTAL_DISTANCE)));
+
+        TextView tDur = (TextView)_view.findViewById(R.id.stat_total_duration);
+        tDur.setText(FormatUtil.formatDuration((int) stat.getValues(StatisticManager.TOTAL_DURATION)));
+
+        TextView lDist = (TextView)_view.findViewById(R.id.stat_longest_distance);
+        lDist.setText(FormatUtil.getDistance((int) stat.getValues(StatisticManager.LONGEST_DISTANCE)));
+
+        TextView lDur = (TextView)_view.findViewById(R.id.stat_longest_duration);
+        lDur.setText(FormatUtil.formatDuration((int)stat.getValues(StatisticManager.LONGEST_DURATION)));
+
+        /*
+        TextView bAvg = (TextView)_view.findViewById(R.id.stat_best_average);
+        Integer avg = Integer.parseInt(Float.toString((float)stat.getValues(StatisticManager.BEST_AVERAGE)));
+        bAvg.setText(FormatUtil.formatDuration(avg));
+        */
+
+        TextView tAct = (TextView)_view.findViewById(R.id.stat_total_activity);
+        tAct.setText(String.valueOf(stat.getValues(StatisticManager.TOTAL_ACTIVITY)));
     }
 
 }
