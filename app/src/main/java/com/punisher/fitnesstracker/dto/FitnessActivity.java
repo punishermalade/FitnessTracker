@@ -15,6 +15,7 @@ public class FitnessActivity {
     private int _duration = 0;
     private FitnessType _fitnessType;
     private String _id = "";
+    private int _average = -1;
 
     public FitnessActivity() {
         _dayOfActivity = new Date(System.currentTimeMillis());
@@ -81,8 +82,11 @@ public class FitnessActivity {
      * @return the average time
      */
     public int getAverage() {
-        float speed = (float)_distance / (float)_duration;
-        float result = 1000 / speed;
-        return Math.round(result);
+        if (_average == -1) { // average is not calculated yet
+            float speed = (float)_distance / (float)_duration;
+            float result = 1000 / speed;
+            _average =  Math.round(result);
+        }
+        return _average;
     }
 }
