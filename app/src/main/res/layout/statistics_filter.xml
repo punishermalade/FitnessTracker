@@ -13,7 +13,7 @@
         android:background="@android:color/transparent"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:text="@string/filter_button_swimming"/>
@@ -24,7 +24,7 @@
         android:background="@android:color/transparent"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:text="@string/filter_button_running"/>
@@ -35,7 +35,7 @@
         android:background="@android:color/transparent"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:text="@string/filter_button_biking"/>

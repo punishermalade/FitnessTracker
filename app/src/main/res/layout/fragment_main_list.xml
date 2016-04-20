@@ -23,6 +23,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:background="@android:color/transparent"
+            android:textAllCaps="true"
             android:textOn="@string/filter_button_swimming"
             android:textOff="@string/filter_button_swimming"/>
 
@@ -35,6 +36,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:background="@android:color/transparent"
+            android:textAllCaps="true"
             android:textOn="@string/filter_button_running"
             android:textOff="@string/filter_button_running"/>
 
@@ -47,6 +49,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:background="@android:color/transparent"
+            android:textAllCaps="true"
             android:textOn="@string/filter_button_biking"
             android:textOff="@string/filter_button_biking"/>
     </LinearLayout>

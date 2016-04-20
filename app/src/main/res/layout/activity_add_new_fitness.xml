@@ -12,32 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:contentInsetStart="0dp"
-        app:contentInsetEnd="0dp"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_add_activity_cancel"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_action_go_back"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/btn_add_activity_cancel"
+            android:src="@drawable/ic_action_go_back"/>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_add_activity_ok"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_action_save"/>
-
-        </RelativeLayout>
-
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_add_activity_ok"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_save">
+        </ImageButton>
 
     </android.support.v7.widget.Toolbar>
 

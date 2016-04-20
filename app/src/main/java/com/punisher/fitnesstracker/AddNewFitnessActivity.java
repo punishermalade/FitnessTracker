@@ -80,11 +80,6 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_add);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-
         // getting the error icon resource
         _errorDayIcon = (ImageView)findViewById(R.id.txt_add_date_error_icon);
         _errorTimeIcon = (ImageView)findViewById(R.id.txt_add_time_error_icon);
