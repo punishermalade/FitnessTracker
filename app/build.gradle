@@ -2,9 +2,15 @@ apply plugin: 'com.android.application'
 
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'punisher'
+            keyPassword 'punisher'
+            storePassword 'punisher'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.punisher.fitnesstracker"
         minSdkVersion 16
