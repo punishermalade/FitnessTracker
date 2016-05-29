@@ -23,19 +23,19 @@ public class ActivityTypeDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //int selectedPos = -1;
-        //int count = 0;
+        int selectedPos = -1;
+        int count = 0;
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
         for (FitnessActivity.FitnessType ft : FitnessActivity.FitnessType.values()) {
             adapter.add(ft.name());
 
-            /*
-            if (_fitness != null && _fitness.getFitnessType().equals(ft)) {
+
+            if (_fitness != null && _fitness.getFitnessType() != null && _fitness.getFitnessType().equals(ft)) {
                 selectedPos = count;
             }
             count++;
-            */
+
         }
 
         // Use the Builder class for convenient dialog construction
@@ -49,10 +49,11 @@ public class ActivityTypeDialog extends DialogFragment {
             }
         });
 
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(adapter, selectedPos, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 _activityTypeListener.onActivityTypeSelected(which);
+                dialog.dismiss();
             }
         });
 
