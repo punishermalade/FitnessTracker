@@ -15,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
+import com.punisher.fitnesstracker.AddNewFitnessActivity;
 import com.punisher.fitnesstracker.R;
+import com.punisher.fitnesstracker.dto.FitnessActivity;
+import com.punisher.fitnesstracker.util.DistanceUtil;
 import com.punisher.fitnesstracker.util.FormatUtil;
 
 public class ActivityDistance extends DialogFragment {
@@ -28,6 +31,7 @@ public class ActivityDistance extends DialogFragment {
     private NumberPicker _mPicker3 = null;
     private Button _btnCancel = null;
     private Button _btnOK = null;
+    private FitnessActivity _fitness = null;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -68,7 +72,20 @@ public class ActivityDistance extends DialogFragment {
         setPicker(_mPicker2, 0, 9, 1);
         setPicker(_mPicker3, 0, 9, 1);
 
+        if (_fitness != null) {
+            setValueInUI(_fitness.getDistance());
+        }
+
         return builder.create();
+    }
+
+    private void setValueInUI(int dist) {
+        int picker[] = DistanceUtil.getPickersFromMeter(dist);
+        _kmPicker1.setValue(picker[0]);
+        _kmPicker2.setValue(picker[1]);
+        _mPicker1.setValue(picker[2]);
+        _mPicker2.setValue(picker[3]);
+        _mPicker3.setValue(picker[4]);
     }
 
     @Override
@@ -80,12 +97,17 @@ public class ActivityDistance extends DialogFragment {
             throw new RuntimeException(a.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        if (a instanceof AddNewFitnessActivity) {
+            _fitness = ((AddNewFitnessActivity)a).getCurrentFitness();
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        _fitness = null;
     }
 
     private void setPicker(NumberPicker np, int min, int max, int digit) {

@@ -111,6 +111,7 @@ public class ActivityDurationFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        _fitness = null;
     }
 
     private void setPickerWithMinMax(NumberPicker np, int min, int max) {
