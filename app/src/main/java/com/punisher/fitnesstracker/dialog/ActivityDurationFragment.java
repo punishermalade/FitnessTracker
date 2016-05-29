@@ -15,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
+import com.punisher.fitnesstracker.AddNewFitnessActivity;
 import com.punisher.fitnesstracker.R;
+import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.util.FormatUtil;
+import com.punisher.fitnesstracker.util.TimeUtil;
 
 public class ActivityDurationFragment extends DialogFragment {
 
@@ -29,6 +32,7 @@ public class ActivityDurationFragment extends DialogFragment {
     private NumberPicker _secPicker2 = null;
     private Button _btnOK = null;
     private Button _btnCancel = null;
+    private FitnessActivity _fitness = null;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -70,6 +74,9 @@ public class ActivityDurationFragment extends DialogFragment {
         setPickerWithMinMax(_minPicker2, 0, 9);
         setPickerWithMinMax(_secPicker2, 0, 9);
 
+        if (_fitness != null) {
+            setValueInUI(_fitness.getDuration());
+        }
 
         return builder.create();
 
@@ -84,12 +91,27 @@ public class ActivityDurationFragment extends DialogFragment {
             throw new RuntimeException(a.toString()
                     + " must implement ActivityDurationListener");
         }
+
+        // setting the UI with the value from fitness activity
+        if (a instanceof AddNewFitnessActivity) {
+            _fitness = ((AddNewFitnessActivity)a).getCurrentFitness();
+        }
+    }
+
+    private void setValueInUI(int duration) {
+        int values[] = TimeUtil.getPickerFromSeconds(duration);
+        _hourPicker1.setValue(values[0]);
+        _minPicker1.setValue(values[1]);
+        _minPicker2.setValue(values[2]);
+        _secPicker1.setValue(values[3]);
+        _secPicker2.setValue(values[4]);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        _fitness = null;
     }
 
     private void setPickerWithMinMax(NumberPicker np, int min, int max) {
