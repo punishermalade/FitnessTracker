@@ -188,6 +188,14 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         super.onResume();
     }
 
+    /**
+     * Returns the current fitness activity attached to this activity.
+     * @return the current fitness activity
+     */
+    public FitnessActivity getCurrentFitness() {
+        return _currentFitness;
+    }
+
     private void resetErrorIcons() {
         _errorDayIcon.setVisibility(View.INVISIBLE);
         _errorTimeIcon.setVisibility(View.INVISIBLE);
