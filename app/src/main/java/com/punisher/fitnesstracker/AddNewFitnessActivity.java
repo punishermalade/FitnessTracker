@@ -186,9 +186,6 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-
-        // scraping the old fitness activity
-        _currentFitness = new FitnessActivity();
     }
 
     private void resetErrorIcons() {
