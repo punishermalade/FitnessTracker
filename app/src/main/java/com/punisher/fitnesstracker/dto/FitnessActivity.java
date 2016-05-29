@@ -35,10 +35,12 @@ public class FitnessActivity {
         _dayOfActivity = d;
     }
 
+    @Deprecated
     public Date getTimeOfActivity() {
         return _timeOfActivity;
     }
 
+    @Deprecated
     public void setTimeOfActivity(Date d) {
         _timeOfActivity = d;
     }

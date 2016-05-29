@@ -54,7 +54,6 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private Calendar _currentCalendar = null;
     private SimpleDateFormat _dateFormat = null;
     private SimpleDateFormat _timeFormat = null;
-    private Date _currentDate = null;
 
     private TextView _btnSetDate = null;
     private TextView _btnSetTime = null;
@@ -93,7 +92,10 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         // set the dateFormat objects and the current time
         _dateFormat = new SimpleDateFormat("dd MMMM yyyy");
         _timeFormat = new SimpleDateFormat("HH:mm");
-        _currentDate = new Date(System.currentTimeMillis());
+
+        // setting the time in the currentfitness object
+        _currentFitness.setDayOfActivity(new Date(System.currentTimeMillis()));
+
         _currentCalendar = new GregorianCalendar();
         _currentCalendar.setTimeZone(TimeZone.getDefault());
         Log.i("fitness", "Timezone default: " + _currentCalendar.getTimeZone().getDisplayName());
@@ -107,7 +109,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         });
         // set the date button and text with the date
         _btnSetDate = (TextView)findViewById(R.id.txt_add_date);
-        _btnSetDate.setText(_dateFormat.format(_currentDate));
+        _btnSetDate.setText(_dateFormat.format(_currentFitness.getDayOfActivity()));
 
 
         LinearLayout layoutTime = (LinearLayout)findViewById(R.id.layout_time);
@@ -119,7 +121,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         });
         // set the time button and text with the current time
         _btnSetTime = (TextView)findViewById(R.id.txt_add_time);
-        _btnSetTime.setText(_timeFormat.format(_currentDate));
+        _btnSetTime.setText(_timeFormat.format(_currentFitness.getDayOfActivity()));
 
 
         LinearLayout layoutActType = (LinearLayout)findViewById(R.id.layout_act_type);
@@ -244,7 +246,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         if (id == DIALOG_ADD_DATE) {
 
             Calendar calendar = new GregorianCalendar();
-            calendar.setTime(_currentDate);
+            calendar.setTime(_currentFitness.getDayOfActivity());
             calendar.setTimeZone(TimeZone.getDefault());
 
             int year = calendar.get(Calendar.YEAR);
@@ -257,7 +259,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
         if (id == DIALOG_ADD_TIME) {
             Calendar calendar = new GregorianCalendar();
-            calendar.setTime(_currentDate);
+            calendar.setTime(_currentFitness.getDayOfActivity());
             calendar.setTimeZone(TimeZone.getDefault());
 
             Dialog timeDialog = new TimePickerDialog(this, myTimeListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
