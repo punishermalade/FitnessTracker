@@ -72,15 +72,31 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnimg_add_activity"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_menu_add" />
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnimg_add_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnimg_start_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_add" />
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>
