@@ -1,23 +1,30 @@
 package com.punisher.fitnesstracker;
 
 import android.location.Location;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.punisher.fitnesstracker.monitor.ClockManager;
+import com.punisher.fitnesstracker.util.DistanceUtil;
+import com.punisher.fitnesstracker.util.FormatUtil;
+
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Track the movement of the device and display the progress. This activity permits the tracking
@@ -29,27 +36,30 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
 
     private static final long UPDATE_INTERVAL = 1000;
     private static final long FASTEST_UPDATE_INTERVAL = 5000;
+    private static final float MINIMUM_DISTANCE_TOLERANCE = 10f; // in meters
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private boolean mIsStarted = false;
 
-    private SparseArray<Location> mLocations;
-    private int mIndex = 0;
+    private ArrayList<Location> mLocations;
     private float mTotalDistance = 0.0f;
 
-    private long mStartTime = 0;
-    private long mEndTime = 0;
     private long mTotalTime = 0;
 
+    private ClockManager mClockManager;
     private TextView mTxtDistance;
     private TextView mTxtTime;
+    private Button mStartBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("fitness", "TrackFitnessActivity.onCreate()");
         setContentView(R.layout.activity_track_fitness);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -67,13 +77,21 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
         }
 
         if (mLocations == null) {
-            mLocations = new SparseArray<>();
+            mLocations = new ArrayList<>();
         }
 
-        mTxtDistance = (TextView)findViewById(R.id.start_tracking_distance_txt);
-        mTxtTime = (TextView)findViewById(R.id.start_tracking_time_txt);
+        mTxtDistance = (TextView)findViewById(R.id.track_fitness_distance);
+        mTxtTime = (TextView)findViewById(R.id.track_fitness_clock);
+        mStartBtn = (Button)findViewById(R.id.track_fitness_start_btn);
+
+        if (mClockManager == null) {
+            mClockManager = new ClockManager();
+            mClockManager.attachUI(mTxtTime);
+        }
+
 
         restoreActivity(savedInstanceState);
+        updateUI();
     }
 
     private void restoreActivity(Bundle b) {
@@ -91,16 +109,8 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
                 mIsStarted = b.getBoolean("started");
             }
 
-            if (b.containsKey("startTime")) {
-                mStartTime = b.getLong("startTime");
-            }
-
             if (b.containsKey("locations")) {
-                mLocations = b.getSparseParcelableArray("locations");
-            }
-
-            if (b.containsKey("locationsIndex")) {
-                mIndex = b.getInt("locationsIndex");
+                mLocations = b.getParcelableArrayList("locations");
             }
 
             if (b.containsKey("totalDistance")) {
@@ -110,9 +120,14 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
             if (b.containsKey("totalTime")) {
                 mTotalTime = b.getLong("totalTime");
             }
+
+            if (b.containsKey("elapsedTime")) {
+                mClockManager.getGameClock().setElapsedTime(b.getLong("elapsedTime"));
+                mClockManager.startClock();
+            }
         }
 
-        updateUI(mTotalDistance, mTotalTime);
+        updateUI();
     }
 
     public void startTrackingClick(View v) {
@@ -121,14 +136,13 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
             stopLocationRequestSilently();
             mGoogleApiClient.connect();
 
-            mIndex = 0;
             mLocations.clear();
             mTotalDistance = 0.0f;
 
             mIsStarted = true;
-            mStartTime = System.currentTimeMillis();
-            mTotalTime = 0;
 
+            mClockManager.getGameClock().setElapsedTime(0);
+            mClockManager.startClock();
         }
         else {
             Log.i("fitness", "Stop fitness click view");
@@ -136,14 +150,14 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
             mGoogleApiClient.disconnect();
 
             mIsStarted = false;
-            mEndTime = System.currentTimeMillis();
 
-            mTotalDistance = calculateDistance();
-            mTotalTime = calculateTime();
+            mClockManager.stopClock();
+            mTotalTime = mClockManager.getGameClock().getElapsed();
 
+            Log.i("fitness", "Activity stopped - dist: " + mTotalDistance + " time: " + mTotalTime);
         }
 
-        updateUI(mTotalDistance, mTotalTime);
+        updateUI();
     }
 
     private void stopLocationRequestSilently() {
@@ -155,38 +169,38 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
         }
     }
 
-    private void updateUI(float dist, long time) {
-        if (dist == 0.0f) {
-            mTxtDistance.setText("Activity in progress");
-        }
-        else {
-            mTxtDistance.setText(mTotalDistance + " meters");
-        }
+    private void updateUI() {
 
-        if (time == 0) {
-            mTxtTime.setText("--:--");
+        mTxtDistance.setText(String.format("%s %s", FormatUtil.getDistance(Math.round(mTotalDistance)),
+                getString(R.string.track_fitness_km_short_lbl)));
+
+        if (mIsStarted) {
+            mStartBtn.setText(R.string.track_fitness_stop_btn_lbl);
         }
         else {
-            mTxtTime.setText(time + " ms");
+            mStartBtn.setText(R.string.track_fitness_start_btn_lbl);
         }
     }
 
-    private long calculateTime() {
-        mEndTime = System.currentTimeMillis();
-        return mEndTime - mStartTime;
-    }
-
-    private float calculateDistance() {
-        float distance = 0.0f;
+    private void calculateDistance() {
         Log.d("fitness", mLocations.size() + " locations to process");
+        float distance;
 
-        for (int i = 0; i < mLocations.size() - 1; i++) {
-            Location current = mLocations.get(i);
-            Location next = mLocations.get(i + 1);
-            float meter = current.distanceTo(next);
-            distance += meter;
+        if (mLocations.size() > 1) {
+            Location last = mLocations.get(mLocations.size() - 2);
+            Location next = mLocations.get(mLocations.size() - 1);
+            distance = last.distanceTo(next);
+
+            if (distance >= MINIMUM_DISTANCE_TOLERANCE) {
+                mTotalDistance += distance;
+            }
+            else {
+                Log.d("fitness", "Removing last entry, tolerance not reached");
+                mLocations.remove(mLocations.size() - 1);
+            }
+
         }
-        return distance;
+
     }
 
     @Override
@@ -200,15 +214,11 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
         Log.d("fitness", "TrackFitnessActivity.onSaveInstanceState()");
         b.putString("distanceText", mTxtDistance.getText().toString());
         b.putString("timeText", mTxtTime.getText().toString());
-
         b.putBoolean("started", mIsStarted);
-        b.putLong("startTime", mStartTime);
-
-        b.putInt("locationsIndex", mIndex);
-        b.putSparseParcelableArray("locations", mLocations);
-
+        b.putParcelableArrayList("locations", mLocations);
         b.putFloat("totalDistance", mTotalDistance);
         b.putLong("totalTime", mTotalTime);
+        b.putLong("elapsedTime", mClockManager.getGameClock().getElapsed());
     }
 
     @Override
@@ -238,6 +248,7 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
         super.onDestroy();
         Log.d("fitness", "TrackFitnessActivity.onDestroy()");
         stopLocationRequestSilently();
+        mClockManager.stopClock();
     }
 
     @Override
@@ -264,6 +275,9 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
     @Override
     public void onLocationChanged(Location location) {
         Log.d("fitness", "new location: " + location.toString());
-        mLocations.append(mIndex++, location);
+        mLocations.add(location);
+
+        calculateDistance();
+        updateUI();
     }
 }

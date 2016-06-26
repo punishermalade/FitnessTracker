@@ -51,7 +51,10 @@
             android:label="@string/title_activity_statistics"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".TrackFitnessActivity"></activity>
+
+        <activity android:name=".TrackFitnessActivity"
+            android:label="@string/title_activity_start_tracking"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
