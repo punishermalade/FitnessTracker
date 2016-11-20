@@ -45,6 +45,11 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
                         ActivityDurationFragment.ActivityDurationListener,
                         ActivityDistance.ActivityDistanceListener {
 
+    public static final String DISTANCE_KEY = "distance";
+    public static final String DURATION_KEY = "duration";
+    public static final String FITNESS_TYPE= "type";
+    public static final String FROZEN_DATA_KEY = "frozen";
+
     private static final int DIALOG_ADD_DATE = 400;
     private static final int DIALOG_ADD_TIME = 500;
     private static final int DIALOG_ADD_ACT_TYPE = 600;
@@ -69,6 +74,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
     private ImageView _errorDistance = null;
 
     private FitnessActivity _currentFitness = null;
+    private boolean _frozenEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +91,9 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
         _errorType = (ImageView)findViewById(R.id.txt_add_type_error_icon);
         _errorDuration = (ImageView)findViewById(R.id.txt_add_duration_error_icon);
         _errorDistance = (ImageView)findViewById(R.id.txt_add_distance_error_icon);
+
+        // flag to not allow edition
+        _frozenEdit = getIntent().getBooleanExtra(FROZEN_DATA_KEY, false);
 
         // creating a new DTO to hold information
         _currentFitness = new FitnessActivity();
@@ -183,6 +192,27 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
                 }
             }
         });
+
+        // if this activity received data already, assign the value here
+        long duration = getIntent().getLongExtra(DURATION_KEY, -1L);
+        if (duration != -1L) {
+            int durInt = (int)duration;
+            _btnSetDuration.setText(FormatUtil.formatDuration(durInt / 1000));
+            _currentFitness.setDuration(durInt / 1000);
+        }
+
+        float distance = getIntent().getFloatExtra(DISTANCE_KEY, -1.0f);
+        if (distance != -1.0f) {
+            int distInt = (int)distance;
+            _btnSetDistance.setText(FormatUtil.getDistance(distInt));
+            _currentFitness.setDistance(distInt);
+        }
+
+        String ftype = getIntent().getStringExtra(FITNESS_TYPE);
+        if (ftype != null && ftype.length() > 0) {
+            _btnSetActivityType.setText(FitnessActivity.FitnessType.valueOf(ftype).toString());
+            _currentFitness.setFitnessType(FitnessActivity.FitnessType.valueOf(ftype));
+        }
     }
 
     @Override
@@ -243,7 +273,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
     private void showInputDialog(int id) {
 
-        if (id == DIALOG_ADD_DATE) {
+        if (!_frozenEdit && id == DIALOG_ADD_DATE) {
 
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(_currentFitness.getDayOfActivity());
@@ -257,7 +287,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
             dateDialog.show();
         }
 
-        if (id == DIALOG_ADD_TIME) {
+        if (!_frozenEdit && id == DIALOG_ADD_TIME) {
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(_currentFitness.getDayOfActivity());
             calendar.setTimeZone(TimeZone.getDefault());
@@ -267,7 +297,7 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
         }
 
-        if (id == DIALOG_ADD_ACT_TYPE) {
+        if (!_frozenEdit && id == DIALOG_ADD_ACT_TYPE) {
 
             DialogFragment newFragment = new ActivityTypeDialog();
             newFragment.onAttach(this);
@@ -275,14 +305,14 @@ public class AddNewFitnessActivity extends AppCompatActivity implements
 
         }
 
-        if (id == DIALOG_ADD_ACT_DURATION) {
+        if (!_frozenEdit && id == DIALOG_ADD_ACT_DURATION) {
 
             DialogFragment actDurationFrag = new ActivityDurationFragment();
             actDurationFrag.onAttach(this);
             actDurationFrag.show(getFragmentManager(), "dialog");
         }
 
-        if (id == DIALOG_ADD_ACT_DISTANCE) {
+        if (!_frozenEdit && id == DIALOG_ADD_ACT_DISTANCE) {
 
             DialogFragment actDistance = new ActivityDistance();
             actDistance.onAttach(this);

@@ -1,5 +1,6 @@
 package com.punisher.fitnesstracker;
 
+import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.monitor.ClockManager;
 import com.punisher.fitnesstracker.util.DistanceUtil;
 import com.punisher.fitnesstracker.util.FormatUtil;
@@ -155,6 +157,15 @@ public class TrackFitnessActivity extends AppCompatActivity implements GoogleApi
             mTotalTime = mClockManager.getGameClock().getElapsed();
 
             Log.i("fitness", "Activity stopped - dist: " + mTotalDistance + " time: " + mTotalTime);
+
+            // sending the time to the record activity
+            Intent i = new Intent(this, AddNewFitnessActivity.class);
+            i.putExtra(AddNewFitnessActivity.DISTANCE_KEY, mTotalDistance);
+            i.putExtra(AddNewFitnessActivity.DURATION_KEY, mTotalTime);
+            i.putExtra(AddNewFitnessActivity.FITNESS_TYPE, FitnessActivity.FitnessType.RUNNING.toString());
+            i.putExtra(AddNewFitnessActivity.FROZEN_DATA_KEY, true);
+            startActivity(i);
+            finish();
         }
 
         updateUI();
