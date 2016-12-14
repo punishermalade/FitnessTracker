@@ -2,22 +2,20 @@ package com.punisher.fitnesstracker.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.punisher.fitnesstracker.R;
 import com.punisher.fitnesstracker.dto.FitnessActivity;
 import com.punisher.fitnesstracker.util.FormatUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -28,22 +26,29 @@ public class FitnessActivityAdapterList extends ArrayAdapter<FitnessActivity> {
 
     private Context _context;
     private int _ressourceId;
-    private FitnessActivity[] _data;
+    private List<FitnessActivity> _data;
+    private List<FitnessActivity> _filtered;
     private Filter _filter = null;
 
-    public FitnessActivityAdapterList(Context context, int resource, FitnessActivity[] fa) {
+    public FitnessActivityAdapterList(Context context, int resource, List<FitnessActivity> fa) {
         super(context, resource, fa);
         _context = context;
         _ressourceId = resource;
-        _data = fa;
+        _filtered = fa;
 
         _filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
+
+                if (_data == null) {
+                    _data = new ArrayList<>();
+                    _data.addAll(_filtered);
+                }
+
                 FilterResults results = new FilterResults();
                 List<FitnessActivity> list = new ArrayList<FitnessActivity>();
                 for (FitnessActivity fa : _data) {
-                    if (fa.getFitnessType().toString().contains(constraint)) {
+                    if (constraint.toString().contains(fa.getFitnessType().toString())) {
                         list.add(fa);
                     }
                 }
@@ -55,10 +60,15 @@ public class FitnessActivityAdapterList extends ArrayAdapter<FitnessActivity> {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                List<FitnessActivity> list = (List<FitnessActivity>)results.values;
-                _data = list.toArray(new FitnessActivity[0]);
+                _filtered = (List<FitnessActivity>)results.values;
+                notifyDataSetChanged();
             }
         };
+    }
+
+    @Override
+    public int getCount() {
+        return _filtered.size();
     }
 
     @Override
@@ -85,21 +95,28 @@ public class FitnessActivityAdapterList extends ArrayAdapter<FitnessActivity> {
             holder = (FitnessHolder)row.getTag();
         }
 
-        FitnessActivity fitness = _data[position];
+
+        FitnessActivity fitness = _filtered.get(position);
         holder.imgType.setImageResource(getFitnessTypeImage(fitness.getFitnessType()));
         holder.txtDate.setText(FormatUtil.formatDate(fitness.getDayOfActivity()));
         holder.txtAverage.setText(FormatUtil.formatAverage(fitness.getDistance(), fitness.getDuration()));
         holder.txtDuration.setText(FormatUtil.formatDuration(fitness.getDuration()));
         holder.txtDistance.setText(FormatUtil.getDistance(fitness.getDistance()));
+
+
         return row;
+    }
+
+    @Override
+    public void sort(Comparator<? super FitnessActivity> comparator) {
+        Collections.sort(_filtered, comparator);
+        notifyDataSetChanged();
     }
 
     @Override
     public Filter getFilter() {
         return _filter;
     }
-
-
 
     private int getFitnessTypeImage(FitnessActivity.FitnessType ft) {
         if (ft == FitnessActivity.FitnessType.BIKING) {
