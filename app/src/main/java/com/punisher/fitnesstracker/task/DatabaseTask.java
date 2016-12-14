@@ -49,6 +49,10 @@ public abstract class DatabaseTask extends AsyncTask<Void, Void, Void> {
         dbManager = new DatabaseManager(c);
     }
 
+    @Override
+    protected void onCancelled() {
+    }
+
     public DatabaseTask(Context c) {
         this(c, null);
     }

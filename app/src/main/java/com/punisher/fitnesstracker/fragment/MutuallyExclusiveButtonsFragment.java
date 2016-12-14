@@ -32,10 +32,6 @@ public class MutuallyExclusiveButtonsFragment extends Fragment {
     private int _layoutResource = -1;
     private boolean _activateFirstButton = false;
 
-    public MutuallyExclusiveButtonsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

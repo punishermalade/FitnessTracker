@@ -62,7 +62,6 @@ public class ActivityList extends Fragment  {
      */
     static {
         buildStandardComparator();
-        Log.i("fitness", "ActivityList static Comparator builder called");
     }
 
     private Map<Integer, Ternary> _sortStatus = null;
@@ -80,29 +79,15 @@ public class ActivityList extends Fragment  {
     private ToggleButton _btnFilterRunning = null;
     private ToggleButton _btnFilterBiking = null;
 
-    private Filter _filter = null;
-
-    private View _view = null;
-
     private Comparator<FitnessActivity> _currentComparator = null;
-
-    /**
-     * a reference to the list view UI element
-     */
     private ListView _listView = null;
-
-    /**
-     * a reference to the array adapter. This reference is used to update the order of the activity
-     */
     private ArrayAdapter<FitnessActivity> _adapter = null;
+    private AsyncTask<Void, Void, Void> mTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState){
-
-        Log.i("fitness", "ActivityList Fragment onCreateView");
-
-        _view = inflater.inflate(R.layout.fragment_main_list, container);
-        _listView = (ListView)_view.findViewById(R.id.list_activity);
+        final View view = inflater.inflate(R.layout.fragment_main_list, container);
+        _listView = (ListView)view.findViewById(R.id.list_activity);
 
         // set the long click listener
         _listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -127,8 +112,7 @@ public class ActivityList extends Fragment  {
 
                             @Override
                             protected void refreshUI() {
-                                Fragment frag = getFragmentManager().findFragmentById(R.id.fragment_personal_list);
-                                frag.onResume();
+                                loadList();
                             }
                         }.execute();
                     }
@@ -152,110 +136,81 @@ public class ActivityList extends Fragment  {
         _sortDescendingIcon = ContextCompat.getDrawable(getActivity(), android.R.drawable.arrow_down_float);
 
         // getting reference on the button
-        _sortDateBtn = (Button)_view.findViewById(R.id.sort_date);
+        _sortDateBtn = (Button)view.findViewById(R.id.sort_date);
         _sortDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(_sortDateBtn, R.id.sort_date_icon);
+                handleSortChange(view, R.id.sort_date_icon);
             }
         });
 
-        _sortDistanceBtn = (Button)_view.findViewById(R.id.sort_distance);
+        _sortDistanceBtn = (Button)view.findViewById(R.id.sort_distance);
         _sortDistanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(_sortDistanceBtn, R.id.sort_distance_icon);
+                handleSortChange(view, R.id.sort_distance_icon);
             }
         });
 
-        _sortDurationBtn = (Button)_view.findViewById(R.id.sort_duration);
+        _sortDurationBtn = (Button)view.findViewById(R.id.sort_duration);
         _sortDurationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(_sortDurationBtn, R.id.sort_duration_icon);
+                handleSortChange(view, R.id.sort_duration_icon);
             }
         });
 
-        _sortAverageBtn = (Button)_view.findViewById(R.id.sort_average);
+        _sortAverageBtn = (Button)view.findViewById(R.id.sort_average);
         _sortAverageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSortChange(_sortAverageBtn, R.id.sort_average_icon);
+                handleSortChange(view, R.id.sort_average_icon);
             }
         });
 
-        handleSortChange(_sortDateBtn, R.id.sort_date_icon);
+        handleSortChange(view, R.id.sort_date_icon);
 
         // setting the filter settings
         _filterStatus = new HashMap<Integer, Boolean>();
         _filterStatus.put(R.id.filter_swimming, true);
         _filterStatus.put(R.id.filter_running, true);
         _filterStatus.put(R.id.filter_biking, true);
-        updateFilterUI(R.id.filter_swimming, true);
-        updateFilterUI(R.id.filter_running, true);
-        updateFilterUI(R.id.filter_biking, true);
+        updateFilterUI(view, R.id.filter_swimming, true);
+        updateFilterUI(view, R.id.filter_running, true);
+        updateFilterUI(view, R.id.filter_biking, true);
 
-        _btnFilterSwimming = (ToggleButton)_view.findViewById(R.id.filter_swimming);
+        _btnFilterSwimming = (ToggleButton)view.findViewById(R.id.filter_swimming);
         _btnFilterSwimming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("fitness", "btnFilterSwimming: " + isChecked);
-                handleFilterChange(R.id.filter_swimming, isChecked);
+                handleFilterChange(view, R.id.filter_swimming, isChecked);
             }
         });
 
-        _btnFilterRunning = (ToggleButton)_view.findViewById(R.id.filter_running);
+        _btnFilterRunning = (ToggleButton)view.findViewById(R.id.filter_running);
         _btnFilterRunning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("fitness", "btnFilterRunning: " +  isChecked);
-                handleFilterChange(R.id.filter_running, isChecked);
+                handleFilterChange(view, R.id.filter_running, isChecked);
             }
         });
 
-        _btnFilterBiking = (ToggleButton)_view.findViewById(R.id.filter_biking);
+        _btnFilterBiking = (ToggleButton)view.findViewById(R.id.filter_biking);
         _btnFilterBiking.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("fitness", "btnFilterBiking: " + isChecked);
-                handleFilterChange(R.id.filter_biking, isChecked);
+                handleFilterChange(view, R.id.filter_biking, isChecked);
             }
         });
 
-        _filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                Log.i("fitness", "Filtering on: " + constraint);
-                FilterResults results = new FilterResults();
-                DatabaseManager dbManager = new DatabaseManager(getActivity());
-                List<FitnessActivity> listRes = new ArrayList<FitnessActivity>();
-                List<FitnessActivity> list = dbManager.getFitnessActivityList();
-                for (FitnessActivity fa : list) {
-                    if (constraint.toString().contains(fa.getFitnessType().toString().toUpperCase())) {
-                        listRes.add(fa);
-                    }
-                }
+        return view;
+    }
 
-                results.values = listRes;
-                results.count = listRes.size();
-                Log.i("fitness", "Filter result count: " + results.count);
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                List<FitnessActivity> list = (List<FitnessActivity>)results.values;
-                _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row,
-                                                            list.toArray(new FitnessActivity[0]));
-                _listView.setAdapter(_adapter);
-
-                if (_currentComparator != null) {
-                    sortFitnessActivity(_currentComparator);
-                }
-            }
-        };
-
-        return _view;
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Need to handle the database in a better and cleaner way
+        mTask.cancel(true);
     }
 
     /**
@@ -273,19 +228,17 @@ public class ActivityList extends Fragment  {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("fitness", "ActivityList Fragment onResume");
-        loadList(getView());
+        loadList();
     }
 
-    private void handleFilterChange(int id, boolean active) {
-        Log.i("fitness", "handling filter change for id: " + id + " Active: " + active);
+    private void handleFilterChange(View v, int id, boolean active) {
         _filterStatus.put(id, active);
         applyFilters();
-        updateFilterUI(id, active);
+        updateFilterUI(v, id, active);
     }
 
     private void applyFilters() {
-        if (_filter != null) {
+        if (_adapter != null) {
 
             StringBuilder builder = new StringBuilder();
             if (_filterStatus.get(R.id.filter_swimming) == true) {
@@ -300,12 +253,12 @@ public class ActivityList extends Fragment  {
                 builder.append(getString(R.string.filter_button_biking).toUpperCase()).append(" ");
             }
 
-            _filter.filter(builder.toString());
+            _adapter.getFilter().filter(builder.toString());
         }
     }
 
-    private void updateFilterUI(int id, boolean active) {
-        ToggleButton button = (ToggleButton)_view.findViewById(id);
+    private void updateFilterUI(View v, int id, boolean active) {
+        ToggleButton button = (ToggleButton)v.findViewById(id);
         if (button != null) {
 
             if (active) {
@@ -317,12 +270,11 @@ public class ActivityList extends Fragment  {
         }
     }
 
-    private void handleSortChange(Button btn, int id) {
-        Log.i("fitness", "Handling a sort change from button id: " + id);
+    private void handleSortChange(View v, int id) {
         switchSortStatus(id);
         applySort(id);
         for (int key : _sortStatus.keySet()) {
-            updateUISortIndicator(btn, key, _sortStatus.get(key));
+            updateUISortIndicator(v, key, _sortStatus.get(key));
         }
     }
 
@@ -375,17 +327,15 @@ public class ActivityList extends Fragment  {
         }
     }
 
-    private void updateUISortIndicator(Button btn, int ressId, Ternary t) {
+    private void updateUISortIndicator(View view, int ressId, Ternary t) {
 
-        ImageView v = (ImageView)_view.findViewById(ressId);
+        ImageView v = (ImageView)view.findViewById(ressId);
 
         if (t.getValue() == Ternary.UNDEFINED) {
             v.setVisibility(View.INVISIBLE);
-            //btn.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         }
         else {
             v.setVisibility(View.VISIBLE);
-            //btn.setBackgroundColor(getResources().getColor(R.color.colorActiveSort));
 
             if (t.getValue() == Ternary.TRUE) {
                 v.setImageDrawable(_sortAscendingIcon);
@@ -396,34 +346,22 @@ public class ActivityList extends Fragment  {
         }
     }
 
-    private void loadList(View view) {
-
-        if (_filter != null) {
-            applyFilters();
-        }
-
-        if (_currentComparator != null) {
-            sortFitnessActivity(_currentComparator);
-        }
-
-        AsyncTask<Void, Void, Void> task = new DatabaseTask(getActivity()) {
+    private void loadList() {
+         mTask = new DatabaseTask(getActivity()) {
 
             private List<FitnessActivity> list = null;
-            private FitnessActivity[] arrList = null;
 
             @Override
             protected void doTask() {
                 list = dbManager.getFitnessActivityList();
-                arrList = list.toArray(new FitnessActivity[0]);
-                Log.i("fitness", "Loading database in DatabaseTask");
             }
 
             @Override
             protected void refreshUI() {
-                _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row, arrList);
+                _adapter = new FitnessActivityAdapterList(getActivity(), R.layout.fragment_main_list_row, list);
                 _listView.setAdapter(_adapter);
 
-                if (_filter != null) {
+                if (_adapter != null) {
                     applyFilters();
                 }
 
@@ -432,6 +370,8 @@ public class ActivityList extends Fragment  {
                 }
             }
         };
+
+        mTask.execute();
     }
 
     private static void buildStandardComparator() {
